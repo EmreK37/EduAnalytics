@@ -210,6 +210,25 @@
                         </Border>
                     </StackPanel>
                 </Border>
+
+                <Border Style="{StaticResource BentoCardStyle}" Margin="0,18,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Okul Yönetim Verilerini İçe Aktar"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <TextBlock Text="Okul yönetiminden aldığınız .edudata dosyasını yükleyerek öğrencileri ve dersleri tek seferde sisteminize kurabilirsiniz."
+                                   FontSize="12"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   Margin="0,3,0,14"
+                                   TextWrapping="Wrap"/>
+                        
+                        <Button Content="Admin Paketi Yükle (.edudata)"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                HorizontalAlignment="Left"
+                                Click="ImportPackage_Click"/>
+                    </StackPanel>
+                </Border>
             </StackPanel>
         </ScrollViewer>
 

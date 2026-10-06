@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -14,11 +14,11 @@ using Microsoft.Win32;
 namespace EduAnalytics.UI.ViewModels;
 
 /// <summary>
-/// Optik Okuma ekranı:
-///   1) Sınav seç → yazdırılabilir optik form PDF'i üret,
-///   2) Taranmış formları (PDF/JPEG/PNG) yükle → PaddleOCR ad-soyad/numara + OMR cevaplar,
-///   3) İnceleme ızgarasında düşük güvenli okumaları düzelt,
-///   4) Kaydet → mevcut cevap girişi servisi üzerinden (kitapçık şık çözme dahil) veritabanına yaz.
+/// Optik Okuma ekranÄ±:
+///   1) SÄ±nav seÃ§ â†’ yazdÄ±rÄ±labilir optik form PDF'i Ã¼ret,
+///   2) TaranmÄ±ÅŸ formlarÄ± (PDF/JPEG/PNG) yÃ¼kle â†’ PaddleOCR ad-soyad/numara + OMR cevaplar,
+///   3) Ä°nceleme Ä±zgarasÄ±nda dÃ¼ÅŸÃ¼k gÃ¼venli okumalarÄ± dÃ¼zelt,
+///   4) Kaydet â†’ mevcut cevap giriÅŸi servisi Ã¼zerinden (kitapÃ§Ä±k ÅŸÄ±k Ã§Ã¶zme dahil) veritabanÄ±na yaz.
 /// </summary>
 public partial class OpticalReadingViewModel : ObservableObject
 {
@@ -30,13 +30,13 @@ public partial class OpticalReadingViewModel : ObservableObject
 
     private AnswerEntryModel? _model;
 
-    /// <summary>Formdaki satır sırasıyla çoktan seçmeli sorular (klasik sorular formda yer almaz).</summary>
+    /// <summary>Formdaki satÄ±r sÄ±rasÄ±yla Ã§oktan seÃ§meli sorular (klasik sorular formda yer almaz).</summary>
     private List<AnswerEntryQuestion> _mcQuestions = new();
 
     /// <summary>
-    /// Kitapçık Id → o kitapçıktaki çoktan seçmeli soruların OrderInBooklet sırasıyla QuestionId'leri.
-    /// B/C/D kitapçıklarında soru sırası karıştırıldığı için form satırı i'nin hangi soruya
-    /// karşılık geldiği öğrencinin kitapçığına bağlıdır; kayıt bu listeyle eşlenir.
+    /// KitapÃ§Ä±k Id â†’ o kitapÃ§Ä±ktaki Ã§oktan seÃ§meli sorularÄ±n OrderInBooklet sÄ±rasÄ±yla QuestionId'leri.
+    /// B/C/D kitapÃ§Ä±klarÄ±nda soru sÄ±rasÄ± karÄ±ÅŸtÄ±rÄ±ldÄ±ÄŸÄ± iÃ§in form satÄ±rÄ± i'nin hangi soruya
+    /// karÅŸÄ±lÄ±k geldiÄŸi Ã¶ÄŸrencinin kitapÃ§Ä±ÄŸÄ±na baÄŸlÄ±dÄ±r; kayÄ±t bu listeyle eÅŸlenir.
     /// </summary>
     private Dictionary<int, List<int>> _bookletMcOrder = new();
 
@@ -81,8 +81,8 @@ public partial class OpticalReadingViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Sınavlar yüklenemedi: {ex.Message}";
-            _log.Error("OptikOkuma", "Sınav listesi yüklenemedi", ex);
+            ErrorMessage = $"SÄ±navlar yÃ¼klenemedi: {ex.Message}";
+            _log.Error("OptikOkuma", "SÄ±nav listesi yÃ¼klenemedi", ex);
         }
     }
 
@@ -132,7 +132,7 @@ public partial class OpticalReadingViewModel : ObservableObject
                 AvailableBookletCodes.Add(b.BookletCode);
             }
 
-            // Soru sırası kitapçıklarda karıştırılabildiğinden her kitapçığın kendi sırası yüklenir.
+            // Soru sÄ±rasÄ± kitapÃ§Ä±klarda karÄ±ÅŸtÄ±rÄ±labildiÄŸinden her kitapÃ§Ä±ÄŸÄ±n kendi sÄ±rasÄ± yÃ¼klenir.
             if (_model.AvailableBooklets.Count > 1)
             {
                 var mcIds = _mcQuestions.Select(q => q.QuestionId).ToHashSet();
@@ -147,37 +147,37 @@ public partial class OpticalReadingViewModel : ObservableObject
             }
 
             var classicCount = _model.Questions.Count - _mcQuestions.Count;
-            ExamInfo = $"{_mcQuestions.Count} çoktan seçmeli soru" +
+            ExamInfo = $"{_mcQuestions.Count} Ã§oktan seÃ§meli soru" +
                        (classicCount > 0 ? $" ({classicCount} klasik soru formda yer almaz)" : "") +
-                       $" • {MatchableStudents.Count} kayıtlı öğrenci" +
-                       (_model.AvailableBooklets.Count > 1 ? $" • {_model.AvailableBooklets.Count} kitapçık" : "");
+                       $" â€¢ {MatchableStudents.Count} kayÄ±tlÄ± Ã¶ÄŸrenci" +
+                       (_model.AvailableBooklets.Count > 1 ? $" â€¢ {_model.AvailableBooklets.Count} kitapÃ§Ä±k" : "");
 
             if (_mcQuestions.Count == 0)
-                ErrorMessage = "Bu sınavda çoktan seçmeli soru yok; optik form üretilemez.";
+                ErrorMessage = "Bu sÄ±navda Ã§oktan seÃ§meli soru yok; optik form Ã¼retilemez.";
             else if (_mcQuestions.Count > OpticalFormTemplate.MaxQuestions)
                 ErrorMessage = $"Optik form en fazla {OpticalFormTemplate.MaxQuestions} soru destekler; " +
-                               $"bu sınavda {_mcQuestions.Count} çoktan seçmeli soru var.";
+                               $"bu sÄ±navda {_mcQuestions.Count} Ã§oktan seÃ§meli soru var.";
             else if (_bookletMcOrder.Values.Any(order => order.Count != _mcQuestions.Count))
-                ErrorMessage = "Kitapçıkların soru listesi sınavın çoktan seçmeli sorularıyla uyuşmuyor; " +
-                               "kitapçıkları yeniden üretin.";
+                ErrorMessage = "KitapÃ§Ä±klarÄ±n soru listesi sÄ±navÄ±n Ã§oktan seÃ§meli sorularÄ±yla uyuÅŸmuyor; " +
+                               "kitapÃ§Ä±klarÄ± yeniden Ã¼retin.";
             else
                 HasExamLoaded = true;
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Sınav yüklenemedi: {ex.Message}";
-            _log.Error("OptikOkuma", $"Sınav {exam.Id} yüklenemedi", ex);
+            ErrorMessage = $"SÄ±nav yÃ¼klenemedi: {ex.Message}";
+            _log.Error("OptikOkuma", $"SÄ±nav {exam.Id} yÃ¼klenemedi", ex);
         }
     }
 
     private OpticalFormSpec BuildSpec()
     {
         if (_model == null)
-            throw new InvalidOperationException("Önce sınav seçilmelidir.");
+            throw new InvalidOperationException("Ã–nce sÄ±nav seÃ§ilmelidir.");
 
-        // Çok kitapçıklı sınavda soru sırası kitapçığa göre değiştiğinden ana soru numarası
-        // basılamaz; satırlar 1..N konum numarasıyla basılır ve kayıtta öğrencinin kitapçık
-        // sırasına eşlenir. Tek kitapçıkta ana numaralar aynen kullanılır.
+        // Ã‡ok kitapÃ§Ä±klÄ± sÄ±navda soru sÄ±rasÄ± kitapÃ§Ä±ÄŸa gÃ¶re deÄŸiÅŸtiÄŸinden ana soru numarasÄ±
+        // basÄ±lamaz; satÄ±rlar 1..N konum numarasÄ±yla basÄ±lÄ±r ve kayÄ±tta Ã¶ÄŸrencinin kitapÃ§Ä±k
+        // sÄ±rasÄ±na eÅŸlenir. Tek kitapÃ§Ä±kta ana numaralar aynen kullanÄ±lÄ±r.
         var multiBooklet = _model.AvailableBooklets.Count > 1;
 
         return new OpticalFormSpec
@@ -192,54 +192,39 @@ public partial class OpticalReadingViewModel : ObservableObject
         };
     }
 
-    // ─────────────────────────── Form üretimi ───────────────────────────
+    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Form Ã¼retimi â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [RelayCommand]
     private void GenerateForm()
     {
         if (!HasExamLoaded || _model == null)
         {
-            ErrorMessage = "Önce bir sınav seçin.";
+            ErrorMessage = "Ã–nce bir sÄ±nav seÃ§in.";
             return;
         }
 
-        var dialog = new SaveFileDialog
-        {
-            Filter = "PDF Dosyası|*.pdf",
-            FileName = $"OptikForm_{Sanitize(_model.ExamTitle)}.pdf"
-        };
-        if (dialog.ShowDialog() != true)
-            return;
+        var dialog = new EduAnalytics.UI.Views.OmrGeneratorDialog(BuildSpec());
+        
+        if (System.Windows.Application.Current.MainWindow != null)
+            dialog.Owner = System.Windows.Application.Current.MainWindow;
 
-        try
-        {
-            var pdf = OpticalFormPdfGenerator.Generate(BuildSpec());
-            File.WriteAllBytes(dialog.FileName, pdf);
-            SuccessMessage = $"✓ Optik form oluşturuldu: {Path.GetFileName(dialog.FileName)}. " +
-                             "Bu formu çoğaltıp sınavda kullanın; taramada aynı şablon okunur.";
-            ErrorMessage = null;
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = $"Form üretilemedi: {ex.Message}";
-            _log.Error("OptikOkuma", "Optik form PDF üretimi başarısız", ex);
-        }
+        dialog.ShowDialog();
     }
 
-    // ─────────────────────────── Tarama okuma ───────────────────────────
+    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Tarama okuma â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [RelayCommand]
     private async Task ImportScansAsync()
     {
         if (!HasExamLoaded || _model == null)
         {
-            ErrorMessage = "Önce bir sınav seçin.";
+            ErrorMessage = "Ã–nce bir sÄ±nav seÃ§in.";
             return;
         }
 
         var dialog = new OpenFileDialog
         {
-            Filter = "Taranmış Formlar|*.pdf;*.png;*.jpg;*.jpeg;*.tif;*.tiff",
+            Filter = "TaranmÄ±ÅŸ Formlar|*.pdf;*.png;*.jpg;*.jpeg;*.tif;*.tiff",
             Multiselect = true
         };
         if (dialog.ShowDialog() != true || dialog.FileNames.Length == 0)
@@ -271,17 +256,17 @@ public partial class OpticalReadingViewModel : ObservableObject
                 }
                 catch (Exception ex)
                 {
-                    // Bozuk tek dosya partiyi durdurmasın; kalan dosyalar okunmaya devam eder.
+                    // Bozuk tek dosya partiyi durdurmasÄ±n; kalan dosyalar okunmaya devam eder.
                     failures.Add($"{Path.GetFileName(file)} ({ex.Message})");
-                    _log.Error("OptikOkuma", $"Tarama dosyası okunamadı: {file}", ex);
+                    _log.Error("OptikOkuma", $"Tarama dosyasÄ± okunamadÄ±: {file}", ex);
                 }
             }
 
             var unreadable = Sheets.Count(s => !s.MarkersFound);
             var unmatched = Sheets.Count(s => s.MarkersFound && s.SelectedStudent == null);
-            SuccessMessage = $"✓ {Sheets.Count} sayfa okundu." +
-                             (unmatched > 0 ? $" {unmatched} sayfada öğrenci elle seçilmeli." : "") +
-                             (unreadable > 0 ? $" {unreadable} sayfa form olarak tanınamadı." : "");
+            SuccessMessage = $"âœ“ {Sheets.Count} sayfa okundu." +
+                             (unmatched > 0 ? $" {unmatched} sayfada Ã¶ÄŸrenci elle seÃ§ilmeli." : "") +
+                             (unreadable > 0 ? $" {unreadable} sayfa form olarak tanÄ±namadÄ±." : "");
             if (failures.Count > 0)
                 ErrorMessage = $"Okunamayan dosyalar: {string.Join(", ", failures)}";
         }
@@ -301,7 +286,7 @@ public partial class OpticalReadingViewModel : ObservableObject
             {
                 SourceLabel = label,
                 MarkersFound = false,
-                MatchInfo = "Okunamadı",
+                MatchInfo = "OkunamadÄ±",
                 WarningsText = string.Join(" ", result.Warnings)
             };
         }
@@ -309,10 +294,10 @@ public partial class OpticalReadingViewModel : ObservableObject
         var (studentId, kind) = StudentMatcher.Match(result.RawStudentNumber, result.RawStudentName, candidates);
         var matchInfo = kind switch
         {
-            MatchKind.ExactNumber => "Numara birebir eşleşti",
-            MatchKind.FuzzyNumber => "Numara yaklaşık eşleşti — kontrol edin",
-            MatchKind.NameOnly => "Yalnızca ad benzerliği — kontrol edin",
-            _ => "Eşleşmedi — elle seçin"
+            MatchKind.ExactNumber => "Numara birebir eÅŸleÅŸti",
+            MatchKind.FuzzyNumber => "Numara yaklaÅŸÄ±k eÅŸleÅŸti â€” kontrol edin",
+            MatchKind.NameOnly => "YalnÄ±zca ad benzerliÄŸi â€” kontrol edin",
+            _ => "EÅŸleÅŸmedi â€” elle seÃ§in"
         };
 
         var bookletCode = result.BookletIndex.HasValue
@@ -324,8 +309,8 @@ public partial class OpticalReadingViewModel : ObservableObject
             : a.Option == OptionLetter.Empty ? '-'
             : a.Option.ToString()[0]));
 
-        // Boş bırakılan satırların "boşluk güveni" farklı bir ölçüdür; sayfanın genel güvenini
-        // yalnızca işaretli (veya çift işaretli) satırlar belirler.
+        // BoÅŸ bÄ±rakÄ±lan satÄ±rlarÄ±n "boÅŸluk gÃ¼veni" farklÄ± bir Ã¶lÃ§Ã¼dÃ¼r; sayfanÄ±n genel gÃ¼venini
+        // yalnÄ±zca iÅŸaretli (veya Ã§ift iÅŸaretli) satÄ±rlar belirler.
         var marked = result.Answers.Where(a => a.MultipleMarks || a.Option != OptionLetter.Empty).ToList();
         var answerConfidence = marked.Count > 0 ? marked.Min(a => a.Confidence) : 0;
         var overall = result.RawStudentNumber.Length > 0
@@ -356,7 +341,7 @@ public partial class OpticalReadingViewModel : ObservableObject
             Sheets.Remove(row);
     }
 
-    // ─────────────────────────── Kaydetme ───────────────────────────
+    // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Kaydetme â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [RelayCommand]
     private async Task SaveAllAsync()
@@ -370,32 +355,32 @@ public partial class OpticalReadingViewModel : ObservableObject
         var rows = Sheets.Where(s => s.MarkersFound && s.SelectedStudent != null).ToList();
         if (rows.Count == 0)
         {
-            ErrorMessage = "Kaydedilecek eşleşmiş sayfa yok. Önce tarama yükleyin ve öğrencileri eşleştirin.";
+            ErrorMessage = "Kaydedilecek eÅŸleÅŸmiÅŸ sayfa yok. Ã–nce tarama yÃ¼kleyin ve Ã¶ÄŸrencileri eÅŸleÅŸtirin.";
             return;
         }
 
-        // Aynı öğrenciye iki sayfa: hangisinin geçerli olduğuna öğretmen karar vermeli.
+        // AynÄ± Ã¶ÄŸrenciye iki sayfa: hangisinin geÃ§erli olduÄŸuna Ã¶ÄŸretmen karar vermeli.
         var duplicates = rows.GroupBy(r => r.SelectedStudent!.StudentId)
             .Where(g => g.Count() > 1)
             .Select(g => g.First().SelectedStudent!.Display)
             .ToList();
         if (duplicates.Count > 0)
         {
-            ErrorMessage = $"Aynı öğrenciye birden fazla sayfa eşleşti: {string.Join(", ", duplicates)}. " +
-                           "Fazla sayfaları silin veya eşleştirmeyi düzeltin.";
+            ErrorMessage = $"AynÄ± Ã¶ÄŸrenciye birden fazla sayfa eÅŸleÅŸti: {string.Join(", ", duplicates)}. " +
+                           "Fazla sayfalarÄ± silin veya eÅŸleÅŸtirmeyi dÃ¼zeltin.";
             return;
         }
 
-        // Çok kitapçıklı sınavda soru sırası kitapçığa göre değişir; kitapçık bilinmeden
-        // form satırları sorulara eşlenemez.
+        // Ã‡ok kitapÃ§Ä±klÄ± sÄ±navda soru sÄ±rasÄ± kitapÃ§Ä±ÄŸa gÃ¶re deÄŸiÅŸir; kitapÃ§Ä±k bilinmeden
+        // form satÄ±rlarÄ± sorulara eÅŸlenemez.
         var multiBooklet = _model.AvailableBooklets.Count > 1;
         if (multiBooklet)
         {
             var missing = rows.Where(r => r.BookletCode == null).Select(r => r.SourceLabel).ToList();
             if (missing.Count > 0)
             {
-                ErrorMessage = $"Kitapçık seçilmemiş sayfalar var: {string.Join(", ", missing)}. " +
-                               "Bu sınavda soru sırası kitapçığa göre değiştiğinden kitapçık seçimi zorunludur.";
+                ErrorMessage = $"KitapÃ§Ä±k seÃ§ilmemiÅŸ sayfalar var: {string.Join(", ", missing)}. " +
+                               "Bu sÄ±navda soru sÄ±rasÄ± kitapÃ§Ä±ÄŸa gÃ¶re deÄŸiÅŸtiÄŸinden kitapÃ§Ä±k seÃ§imi zorunludur.";
                 return;
             }
         }
@@ -407,14 +392,14 @@ public partial class OpticalReadingViewModel : ObservableObject
             var answers = ParseAnswers(row.AnswersText);
             if (answers == null)
             {
-                ErrorMessage = $"\"{row.SourceLabel}\": cevap dizisinde geçersiz karakter var. " +
-                               "İzin verilenler: A–E, '-' (boş), '?' (belirsiz).";
+                ErrorMessage = $"\"{row.SourceLabel}\": cevap dizisinde geÃ§ersiz karakter var. " +
+                               "Ä°zin verilenler: Aâ€“E, '-' (boÅŸ), '?' (belirsiz).";
                 return;
             }
             if (answers.Count != _mcQuestions.Count)
             {
-                ErrorMessage = $"\"{row.SourceLabel}\": cevap dizisi {_mcQuestions.Count} karakter olmalı, " +
-                               $"{answers.Count} karakter girilmiş.";
+                ErrorMessage = $"\"{row.SourceLabel}\": cevap dizisi {_mcQuestions.Count} karakter olmalÄ±, " +
+                               $"{answers.Count} karakter girilmiÅŸ.";
                 return;
             }
 
@@ -422,8 +407,8 @@ public partial class OpticalReadingViewModel : ObservableObject
             if (row.BookletCode != null && _bookletCodeToId.TryGetValue(row.BookletCode, out var id))
                 bookletId = id;
 
-            // Form satırı i → öğrencinin kitapçığındaki i. çoktan seçmeli soru.
-            // Tek kitapçıkta (veya kitapçıksız sınavda) bu sıra ana sırayla aynıdır.
+            // Form satÄ±rÄ± i â†’ Ã¶ÄŸrencinin kitapÃ§Ä±ÄŸÄ±ndaki i. Ã§oktan seÃ§meli soru.
+            // Tek kitapÃ§Ä±kta (veya kitapÃ§Ä±ksÄ±z sÄ±navda) bu sÄ±ra ana sÄ±rayla aynÄ±dÄ±r.
             var questionOrder = bookletId.HasValue && _bookletMcOrder.TryGetValue(bookletId.Value, out var order)
                 ? order
                 : masterOrder;
@@ -446,13 +431,13 @@ public partial class OpticalReadingViewModel : ObservableObject
         try
         {
             await _answerEntry.SaveAsync(_model.ExamId, updates);
-            SuccessMessage = $"✓ {rows.Count} öğrencinin cevapları kaydedildi. " +
-                             "Sınav analizi ekranından sonuçları inceleyebilirsiniz.";
+            SuccessMessage = $"âœ“ {rows.Count} Ã¶ÄŸrencinin cevaplarÄ± kaydedildi. " +
+                             "SÄ±nav analizi ekranÄ±ndan sonuÃ§larÄ± inceleyebilirsiniz.";
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Kaydetme başarısız: {ex.Message}";
-            _log.Error("OptikOkuma", "Optik okuma sonuçları kaydedilemedi", ex);
+            ErrorMessage = $"Kaydetme baÅŸarÄ±sÄ±z: {ex.Message}";
+            _log.Error("OptikOkuma", "Optik okuma sonuÃ§larÄ± kaydedilemedi", ex);
         }
         finally
         {
@@ -460,7 +445,7 @@ public partial class OpticalReadingViewModel : ObservableObject
         }
     }
 
-    /// <summary>'ABD-?CA…' biçimindeki diziyi şık listesine çevirir; geçersiz karakterde null döner.</summary>
+    /// <summary>'ABD-?CAâ€¦' biÃ§imindeki diziyi ÅŸÄ±k listesine Ã§evirir; geÃ§ersiz karakterde null dÃ¶ner.</summary>
     private static List<OptionLetter>? ParseAnswers(string text)
     {
         var list = new List<OptionLetter>();

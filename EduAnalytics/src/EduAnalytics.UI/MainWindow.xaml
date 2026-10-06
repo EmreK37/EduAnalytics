@@ -26,6 +26,7 @@
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style x:Key="SidebarLabelStyle" TargetType="TextBlock">
             <Setter Property="Margin" Value="14,0,0,0"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -86,6 +87,12 @@
 
         <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
             <views:DashboardView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MyCoursesViewModel}">
+            <views:MyCoursesView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AdminExportViewModel}">
+            <views:AdminExportView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:ExamCalendarViewModel}">
             <views:ExamCalendarView/>
@@ -375,10 +382,31 @@
                         <Button Tag="Dashboard"
                                 Command="{Binding NavigateToDashboardCommand}"
                                 Style="{StaticResource SidebarButtonStyle}"
-                                ToolTip="Dashboard (Ctrl+1)">
+                                ToolTip="Ana Sayfa (Ctrl+1)">
                             <StackPanel Orientation="Horizontal">
                                 <mi:MaterialIcon Kind="ViewDashboardOutline" Width="20" Height="20" VerticalAlignment="Center"/>
-                                <TextBlock Text="Dashboard" Style="{StaticResource SidebarLabelStyle}"/>
+                                <TextBlock Text="Ana Sayfa" Style="{StaticResource SidebarLabelStyle}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Tag="MyCourses"
+                                Command="{Binding NavigateToMyCoursesCommand}"
+                                Style="{StaticResource SidebarButtonStyle}"
+                                ToolTip="Derslerim">
+                            <StackPanel Orientation="Horizontal">
+                                <mi:MaterialIcon Kind="BookEducationOutline" Width="20" Height="20" VerticalAlignment="Center"/>
+                                <TextBlock Text="Derslerim" Style="{StaticResource SidebarLabelStyle}"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <Button Tag="AdminExport"
+                                Command="{Binding NavigateToAdminExportCommand}"
+                                Style="{StaticResource SidebarButtonStyle}"
+                                ToolTip="Sistem Paketleme (Admin)"
+                                Visibility="{Binding IsAdminMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <mi:MaterialIcon Kind="DatabaseExport" Width="20" Height="20" VerticalAlignment="Center" Foreground="#FF3B30"/>
+                                <TextBlock Text="Admin: Dışa Aktar" Style="{StaticResource SidebarLabelStyle}" Foreground="#FF3B30" FontWeight="Bold"/>
                             </StackPanel>
                         </Button>
 

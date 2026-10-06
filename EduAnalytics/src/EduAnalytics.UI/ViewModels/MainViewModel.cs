@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduAnalytics.UI.Services;
 using EduAnalytics.UI.Services.AIAssistant;
@@ -8,6 +8,7 @@ namespace EduAnalytics.UI.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
+    public bool IsAdminMode => App.IsAdminMode;
     private readonly IServiceProvider _services;
 
     /// <summary>Sağ alt köşede bildirim göstermek için. Tüm VM'ler bunu kullanır.</summary>
@@ -112,6 +113,20 @@ public partial class MainViewModel : ObservableObject
                 ae.BackRequested -= OnAnswerEntryBackRequested;
                 break;
         }
+    }
+
+    [RelayCommand]
+    private void NavigateToMyCourses()
+    {
+        CurrentView = _services.GetRequiredService<MyCoursesViewModel>();
+        ActiveMenu = "MyCourses";
+    }
+
+    [RelayCommand]
+    private void NavigateToAdminExport()
+    {
+        CurrentView = _services.GetRequiredService<AdminExportViewModel>();
+        ActiveMenu = "AdminExport";
     }
 
     [RelayCommand]

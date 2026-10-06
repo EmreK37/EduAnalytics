@@ -11,13 +11,16 @@
 
     <UserControl.Resources>
         <Style x:Key="DashboardKpiCardStyle" TargetType="Border" BasedOn="{StaticResource CardStyle}">
-            <Setter Property="Padding" Value="18,17,18,15"/>
-            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="20,18,20,16"/>
+            <Setter Property="CornerRadius" Value="14"/>
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Effect" Value="{DynamicResource ShadowSm}"/>
+            <Setter Property="Background" Value="{DynamicResource CardBgBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
                     <Setter Property="Background" Value="{DynamicResource ClickableCardHoverBrush}"/>
                 </Trigger>
             </Style.Triggers>
@@ -32,107 +35,59 @@
             <Setter Property="Effect" Value="{DynamicResource ShadowSm}"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
                     <Setter Property="Background" Value="{DynamicResource ClickableCardHoverBrush}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="DashboardLabelCapsStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{DynamicResource SubtleBrush}"/>
             <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
         </Style>
 
         <Style x:Key="DashboardMonoValueStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Geist Mono, JetBrains Mono, Consolas, Menlo, monospace"/>
-            <Setter Property="FontSize" Value="32"/>
-            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontFamily" Value="Segoe UI, sans-serif"/>
+            <Setter Property="FontSize" Value="34"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
-            <Setter Property="LineHeight" Value="32"/>
+            <Setter Property="LineHeight" Value="34"/>
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
         </Style>
 
         <Style x:Key="DashboardCaptionStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontSize" Value="12.5"/>
             <Setter Property="LineHeight" Value="16"/>
             <Setter Property="Foreground" Value="{DynamicResource SubtleBrush}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
 
         <Style x:Key="DashboardIconBoxStyle" TargetType="Border">
-            <Setter Property="Width" Value="26"/>
-            <Setter Property="Height" Value="26"/>
-            <Setter Property="CornerRadius" Value="7"/>
-            <Setter Property="Background" Value="{DynamicResource ChipBgBrush}"/>
+            <Setter Property="Width" Value="36"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="CornerRadius" Value="10"/>
         </Style>
 
         <Style x:Key="DashboardMetaChipStyle" TargetType="Border" BasedOn="{StaticResource Chip}">
-            <Setter Property="Padding" Value="8,3"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Background" Value="{DynamicResource ChipBgBrush}"/>
-        </Style>
-
-        <Style x:Key="DashboardAiSummaryBandStyle" TargetType="Border">
-            <Setter Property="Background" Value="{DynamicResource AiSummaryBgBrush}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource AiSummaryBorderBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,4"/>
             <Setter Property="CornerRadius" Value="12"/>
-            <Setter Property="Padding" Value="16,14"/>
-            <Setter Property="Margin" Value="0,12,0,0"/>
-        </Style>
-
-        <Style x:Key="DashboardAiIconStyle" TargetType="Border">
-            <Setter Property="Width" Value="28"/>
-            <Setter Property="Height" Value="28"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
-            <Setter Property="Effect" Value="{DynamicResource ShadowSm}"/>
-        </Style>
-
-        <Style x:Key="DashboardAiTitleStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
-            <Setter Property="Margin" Value="0,0,0,4"/>
-        </Style>
-
-        <Style x:Key="DashboardSignalCardStyle" TargetType="Border">
-            <Setter Property="Padding" Value="14,12"/>
-            <Setter Property="CornerRadius" Value="10"/>
-            <Setter Property="BorderThickness" Value="1"/>
-        </Style>
-
-        <Style x:Key="DashboardMetricValueStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Geist Mono, JetBrains Mono, Consolas, Menlo, monospace"/>
-            <Setter Property="FontSize" Value="22"/>
-            <Setter Property="FontWeight" Value="Medium"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
-            <Setter Property="LineHeight" Value="24"/>
-        </Style>
-
-        <Style x:Key="DashboardRateBarStyle" TargetType="ProgressBar">
-            <Setter Property="Height" Value="3"/>
-            <Setter Property="Margin" Value="0,10,0,0"/>
             <Setter Property="Background" Value="{DynamicResource ChipBgBrush}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
-            <Setter Property="Minimum" Value="0"/>
-            <Setter Property="Maximum" Value="100"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ProgressBar">
-                        <Grid>
-                            <Border Background="{TemplateBinding Background}" CornerRadius="2"/>
-                            <Border x:Name="PART_Indicator"
-                                    HorizontalAlignment="Left"
-                                    Background="{TemplateBinding Foreground}"
-                                    CornerRadius="2"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+        </Style>
+
+        <Style x:Key="QuickActionCardStyle" TargetType="Border" BasedOn="{StaticResource CardStyle}">
+            <Setter Property="Padding" Value="14,14"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="{DynamicResource CardBgBrush}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource PrimaryLightBrush}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </UserControl.Resources>
 
@@ -140,8 +95,8 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
             <Grid Width="Auto"
-                  MaxWidth="1400"
-                  Margin="32,28,32,80"
+                  MaxWidth="1500"
+                  Margin="40,36,40,80"
                   HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -150,28 +105,19 @@
                 </Grid.RowDefinitions>
 
                 <!-- PAGE HEAD -->
-                <Grid Grid.Row="0" Margin="0,0,0,28">
+                <Grid Grid.Row="0" Margin="0,0,0,32">
                     <StackPanel>
                         <TextBlock Foreground="{DynamicResource TextPrimaryBrush}"
-                                   FontSize="36"
-                                   LineHeight="42"
-                                   TextOptions.TextFormattingMode="Display">
-                            <Run Text="{Binding GreetingText, Mode=OneWay}"
-                                 FontFamily="Instrument Serif, Iowan Old Style, Georgia, serif"
-                                 FontStyle="Italic"
-                                 FontWeight="Normal"/>
-                            <Run Text="{Binding DisplayUserName, Mode=OneWay}"
-                                 FontFamily="Geist, Inter, Segoe UI Variable, Segoe UI, sans-serif"
-                                 FontStyle="Normal"
-                                 FontWeight="Medium"/>
+                                   FontSize="34"
+                                   FontWeight="Bold"
+                                   LineHeight="42">
+                            <Run Text="İyi çalışmalar," />
+                            <Run Text="{Binding DisplayUserName, Mode=OneWay}" Foreground="{DynamicResource PrimaryBrush}" />
                         </TextBlock>
-                        <TextBlock Text="Sınav performansı, güvenilirlik ve öğrenim çıktısı risklerinin günlük özeti - tek ekranda."
-                                   FontSize="13.5"
-                                   LineHeight="20"
-                                   MaxWidth="560"
-                                   Margin="0,6,0,0"
-                                   HorizontalAlignment="Left"
-                                   TextAlignment="Left"
+                        <TextBlock Text="Sınav performansı, güvenlik analizleri ve öğrenci durumu hakkında günlük özet tablonuz."
+                                   FontSize="15"
+                                   LineHeight="22"
+                                   Margin="0,8,0,0"
                                    Foreground="{DynamicResource SubtleBrush}"
                                    TextWrapping="Wrap"/>
                     </StackPanel>
@@ -179,7 +125,7 @@
 
                 <!-- KPI GRID -->
                 <UniformGrid Grid.Row="1" Rows="1" Columns="4" Margin="0,0,0,36">
-                    <Border Style="{StaticResource DashboardKpiCardStyle}" Margin="0,0,14,0">
+                    <Border Style="{StaticResource DashboardKpiCardStyle}" Margin="0,0,16,0">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -188,51 +134,24 @@
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Row="0">
-                                <TextBlock Text="ANALİZE HAZIR" Style="{StaticResource DashboardLabelCapsStyle}"/>
-                                <Button Command="{Binding OpenExamManagementCommand}"
-                                        HorizontalAlignment="Right"
-                                        Padding="0"
-                                        MinWidth="26"
-                                        MinHeight="26"
-                                        ToolTip="Sınav yönetimini aç"
-                                        FocusVisualStyle="{x:Null}">
-                                    <Border Style="{StaticResource DashboardIconBoxStyle}">
-                                        <mi:MaterialIcon Kind="FileDocumentMultipleOutline"
-                                                         Width="14" Height="14"
-                                                         Foreground="{DynamicResource TextSecondaryBrush}"
-                                                         HorizontalAlignment="Center"
-                                                         VerticalAlignment="Center"/>
-                                    </Border>
-                                </Button>
+                                <TextBlock Text="ANALİZE HAZIR" Style="{StaticResource DashboardLabelCapsStyle}" VerticalAlignment="Center"/>
+                                <Border Style="{StaticResource DashboardIconBoxStyle}" Background="#E0F2FE" HorizontalAlignment="Right">
+                                    <mi:MaterialIcon Kind="FileDocumentMultipleOutline" Width="18" Height="18" Foreground="#0284C7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
                             </Grid>
 
-                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,0">
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,18,0,0">
                                 <TextBlock Text="{Binding Exams.Count}" Style="{StaticResource DashboardMonoValueStyle}"/>
-                                <TextBlock Text=" sınav"
-                                           FontFamily="Geist Mono, JetBrains Mono, Consolas, Menlo, monospace"
-                                           FontSize="14"
-                                           Foreground="{DynamicResource SubtleBrush}"
-                                           VerticalAlignment="Bottom"
-                                           Margin="8,0,0,2"/>
+                                <TextBlock Text=" Sınav" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource SubtleBrush}" VerticalAlignment="Bottom" Margin="8,0,0,4"/>
                             </StackPanel>
 
-                            <Grid Grid.Row="2" Margin="0,14,0,0" VerticalAlignment="Bottom">
-                                <TextBlock Text="Yeni analiz bekleniyor"
-                                           Style="{StaticResource DashboardCaptionStyle}"/>
-                                <Polyline Points="0,18 10,16 20,17 30,12 40,14 50,8 60,4"
-                                          Stroke="{DynamicResource TextSecondaryBrush}"
-                                          StrokeThickness="1.4"
-                                          Opacity="0.65"
-                                          HorizontalAlignment="Right"
-                                          VerticalAlignment="Bottom"
-                                          Width="60"
-                                          Height="22"
-                                          Stretch="None"/>
+                            <Grid Grid.Row="2" Margin="0,18,0,0" VerticalAlignment="Bottom">
+                                <TextBlock Text="Yeni analiz bekleniyor" Style="{StaticResource DashboardCaptionStyle}"/>
                             </Grid>
                         </Grid>
                     </Border>
 
-                    <Border Style="{StaticResource DashboardKpiCardStyle}" Margin="0,0,14,0">
+                    <Border Style="{StaticResource DashboardKpiCardStyle}" Margin="0,0,16,0">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -241,51 +160,26 @@
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Row="0">
-                                <TextBlock Text="KAYITLI ÖĞRENCİ" Style="{StaticResource DashboardLabelCapsStyle}"/>
-                                <Button Command="{Binding OpenStudentsCommand}"
-                                        HorizontalAlignment="Right"
-                                        Padding="0"
-                                        MinWidth="26"
-                                        MinHeight="26"
-                                        ToolTip="Öğrencileri aç"
-                                        FocusVisualStyle="{x:Null}">
-                                    <Border Style="{StaticResource DashboardIconBoxStyle}">
-                                        <mi:MaterialIcon Kind="AccountGroup"
-                                                         Width="14" Height="14"
-                                                         Foreground="{DynamicResource TextSecondaryBrush}"
-                                                         HorizontalAlignment="Center"
-                                                         VerticalAlignment="Center"/>
-                                    </Border>
-                                </Button>
+                                <TextBlock Text="KAYITLI ÖĞRENCİ" Style="{StaticResource DashboardLabelCapsStyle}" VerticalAlignment="Center"/>
+                                <Border Style="{StaticResource DashboardIconBoxStyle}" Background="#DCFCE7" HorizontalAlignment="Right">
+                                    <mi:MaterialIcon Kind="AccountGroup" Width="18" Height="18" Foreground="#16A34A" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
                             </Grid>
 
-                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,0">
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,18,0,0">
                                 <TextBlock Text="{Binding StudentCount}" Style="{StaticResource DashboardMonoValueStyle}"/>
-                                <TextBlock Text="+2"
-                                           FontFamily="Geist Mono, JetBrains Mono, Consolas, Menlo, monospace"
-                                           FontSize="11.5"
-                                           Foreground="{DynamicResource SuccessBrush}"
-                                           FontWeight="Medium"
-                                           VerticalAlignment="Center"
-                                           Margin="8,4,0,0"/>
+                                <Border Background="#DCFCE7" CornerRadius="8" Padding="6,2" Margin="10,4,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="+2 Yeni" FontSize="12" Foreground="#16A34A" FontWeight="Bold"/>
+                                </Border>
                             </StackPanel>
 
-                            <Grid Grid.Row="2" Margin="0,14,0,0" VerticalAlignment="Bottom">
-                                <TextBlock Text="Bu dönem yeni kayıtlar"
-                                           Style="{StaticResource DashboardCaptionStyle}"/>
-                                <Polyline Points="0,18 10,18 20,16 30,16 40,12 50,10 60,6"
-                                          Stroke="{DynamicResource SuccessBrush}"
-                                          StrokeThickness="1.4"
-                                          HorizontalAlignment="Right"
-                                          VerticalAlignment="Bottom"
-                                          Width="60"
-                                          Height="22"
-                                          Stretch="None"/>
+                            <Grid Grid.Row="2" Margin="0,18,0,0" VerticalAlignment="Bottom">
+                                <TextBlock Text="Bu dönem güncel kayıtlar" Style="{StaticResource DashboardCaptionStyle}"/>
                             </Grid>
                         </Grid>
                     </Border>
 
-                    <Border Style="{StaticResource DashboardKpiCardStyle}" Margin="0,0,14,0">
+                    <Border Style="{StaticResource DashboardKpiCardStyle}" Margin="0,0,16,0">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -294,46 +188,19 @@
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Row="0">
-                                <TextBlock Text="ORT. BAŞARI" Style="{StaticResource DashboardLabelCapsStyle}"/>
-                                <Button Command="{Binding OpenLatestExamStatisticsCommand}"
-                                        HorizontalAlignment="Right"
-                                        Padding="0"
-                                        MinWidth="26"
-                                        MinHeight="26"
-                                        ToolTip="En son sınavın istatistiklerini aç"
-                                        FocusVisualStyle="{x:Null}">
-                                    <Border Style="{StaticResource DashboardIconBoxStyle}">
-                                        <mi:MaterialIcon Kind="TrendingUp"
-                                                         Width="14" Height="14"
-                                                         Foreground="{DynamicResource TextSecondaryBrush}"
-                                                         HorizontalAlignment="Center"
-                                                         VerticalAlignment="Center"/>
-                                    </Border>
-                                </Button>
+                                <TextBlock Text="GENEL ORT. BAŞARI" Style="{StaticResource DashboardLabelCapsStyle}" VerticalAlignment="Center"/>
+                                <Border Style="{StaticResource DashboardIconBoxStyle}" Background="#FEF3C7" HorizontalAlignment="Right">
+                                    <mi:MaterialIcon Kind="TrendingUp" Width="18" Height="18" Foreground="#D97706" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
                             </Grid>
 
-                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,0">
-                                <TextBlock Text="{Binding OverallAverageSuccessRate, StringFormat={}{0:N1}}"
-                                           Style="{StaticResource DashboardMonoValueStyle}"/>
-                                <TextBlock Text="%"
-                                           FontFamily="Geist Mono, JetBrains Mono, Consolas, Menlo, monospace"
-                                           FontSize="14"
-                                           Foreground="{DynamicResource SubtleBrush}"
-                                           VerticalAlignment="Bottom"
-                                           Margin="6,0,0,2"/>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,18,0,0">
+                                <TextBlock Text="{Binding OverallAverageSuccessRate, StringFormat={}{0:N1}}" Style="{StaticResource DashboardMonoValueStyle}"/>
+                                <TextBlock Text="%" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource SubtleBrush}" VerticalAlignment="Bottom" Margin="4,0,0,4"/>
                             </StackPanel>
 
-                            <Grid Grid.Row="2" Margin="0,14,0,0" VerticalAlignment="Bottom">
-                                <TextBlock Text="Tüm sınavlarda genel görünüm"
-                                           Style="{StaticResource DashboardCaptionStyle}"/>
-                                <Polyline Points="0,8 10,6 20,9 30,7 40,11 50,13 60,15"
-                                          Stroke="{DynamicResource WarningBrush}"
-                                          StrokeThickness="1.4"
-                                          HorizontalAlignment="Right"
-                                          VerticalAlignment="Bottom"
-                                          Width="60"
-                                          Height="22"
-                                          Stretch="None"/>
+                            <Grid Grid.Row="2" Margin="0,18,0,0" VerticalAlignment="Bottom">
+                                <TextBlock Text="Tüm sınavlardaki genel başarı" Style="{StaticResource DashboardCaptionStyle}"/>
                             </Grid>
                         </Grid>
                     </Border>
@@ -347,195 +214,184 @@
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Row="0">
-                                <TextBlock Text="SON AKTİVİTE" Style="{StaticResource DashboardLabelCapsStyle}"/>
-                                <Button Command="{Binding OpenCalendarCommand}"
-                                        HorizontalAlignment="Right"
-                                        Padding="0"
-                                        MinWidth="26"
-                                        MinHeight="26"
-                                        ToolTip="Takvimi aç"
-                                        FocusVisualStyle="{x:Null}">
-                                    <Border Style="{StaticResource DashboardIconBoxStyle}">
-                                        <mi:MaterialIcon Kind="CalendarClock"
-                                                         Width="14" Height="14"
-                                                         Foreground="{DynamicResource TextSecondaryBrush}"
-                                                         HorizontalAlignment="Center"
-                                                         VerticalAlignment="Center"/>
-                                    </Border>
-                                </Button>
+                                <TextBlock Text="SON AKTİVİTE" Style="{StaticResource DashboardLabelCapsStyle}" VerticalAlignment="Center"/>
+                                <Border Style="{StaticResource DashboardIconBoxStyle}" Background="#F3E8FF" HorizontalAlignment="Right">
+                                    <mi:MaterialIcon Kind="CalendarClock" Width="18" Height="18" Foreground="#9333EA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
                             </Grid>
 
                             <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,18,0,0">
-                                <TextBlock Text="{Binding LastActivityDate}"
-                                           Style="{StaticResource DashboardMonoValueStyle}"
-                                           FontSize="24"/>
+                                <TextBlock Text="{Binding LastActivityDate}" Style="{StaticResource DashboardMonoValueStyle}" FontSize="24" VerticalAlignment="Center"/>
                             </StackPanel>
 
-                            <Grid Grid.Row="2" Margin="0,14,0,0" VerticalAlignment="Bottom">
-                                <TextBlock Text="En güncel sınav kaydı"
-                                           Style="{StaticResource DashboardCaptionStyle}"/>
-                                <Grid Width="60" Height="22" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                    <Line X1="0" Y1="11" X2="60" Y2="11"
-                                          Stroke="{DynamicResource SubtleBrush}"
-                                          StrokeThickness="1"
-                                          StrokeDashArray="2 3"/>
-                                    <Ellipse Width="5" Height="5"
-                                             Fill="{DynamicResource PrimaryBrush}"
-                                             Margin="48,8,0,0"
-                                             HorizontalAlignment="Left"
-                                             VerticalAlignment="Top"/>
-                                </Grid>
+                            <Grid Grid.Row="2" Margin="0,18,0,0" VerticalAlignment="Bottom">
+                                <TextBlock Text="En son sistem hareketi" Style="{StaticResource DashboardCaptionStyle}"/>
                             </Grid>
                         </Grid>
                     </Border>
                 </UniformGrid>
 
-                <!-- EXAM LIST -->
+                <!-- MAIN CONTENT AREA: 2 COLUMNS -->
                 <Grid Grid.Row="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="340"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Row="0" Margin="0,0,0,14">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                    <!-- SOL: EXAM LIST -->
+                    <Grid Grid.Column="0" Margin="0,0,32,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                        <TextBlock Text="Sınav Performans Listesi"
-                                   FontSize="18"
-                                   FontWeight="Medium"
-                                   Foreground="{DynamicResource TextPrimaryBrush}"
-                                   VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="0" Text="Son Sınav Performansları" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
 
-                    </Grid>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding FilteredExams}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource DashboardExamCardStyle}">
+                                        <Border.InputBindings>
+                                            <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.OpenAnalysisCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}"/>
+                                        </Border.InputBindings>
 
-                    <ItemsControl Grid.Row="1" ItemsSource="{Binding FilteredExams}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Style="{StaticResource DashboardExamCardStyle}">
-                                    <Border.InputBindings>
-                                        <MouseBinding MouseAction="LeftClick"
-                                                      Command="{Binding DataContext.OpenAnalysisCommand,
-                                                                  RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                      CommandParameter="{Binding}"/>
-                                    </Border.InputBindings>
-
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-
-                                        <Grid Grid.Row="0" Margin="22,18,22,18">
+                                        <Grid Margin="24,20,24,20">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <StackPanel Grid.Column="0" Margin="0,0,24,0">
+                                            <StackPanel Grid.Column="0" Margin="0,0,24,0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding ExamTitle}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" Margin="0,0,0,8"/>
+                                                
                                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                    <Border Background="{DynamicResource WarningSubtleBgBrush}"
-                                                            BorderBrush="{DynamicResource WarningSubtleBorderBrush}"
-                                                            BorderThickness="1"
-                                                            CornerRadius="8"
-                                                            Padding="7,3">
+                                                    <Border Background="{DynamicResource WarningSubtleBgBrush}" BorderBrush="{DynamicResource WarningBrush}" BorderThickness="1" CornerRadius="8" Padding="8,4">
                                                         <StackPanel Orientation="Horizontal">
-                                                            <Ellipse Width="6" Height="6"
-                                                                     Fill="{DynamicResource WarningBrush}"
-                                                                     VerticalAlignment="Center"/>
-                                                            <TextBlock Text="Gözden Geçir"
-                                                                       Margin="6,0,0,0"
-                                                                       Foreground="{DynamicResource WarningBrush}"
-                                                                       FontSize="11"
-                                                                       FontWeight="SemiBold"/>
+                                                            <Ellipse Width="6" Height="6" Fill="{DynamicResource WarningBrush}" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="Analiz Bekliyor" Margin="6,0,0,0" Foreground="{DynamicResource WarningBrush}" FontSize="11" FontWeight="Bold"/>
                                                         </StackPanel>
                                                     </Border>
-
-                                                    <Border Style="{StaticResource DashboardMetaChipStyle}" Margin="8,0,0,0">
+                                                    <Border Style="{StaticResource DashboardMetaChipStyle}" Margin="10,0,0,0">
                                                         <StackPanel Orientation="Horizontal">
-                                                            <mi:MaterialIcon Kind="CalendarClock"
-                                                                             Width="11" Height="11"
-                                                                             Foreground="{DynamicResource SubtleBrush}"
-                                                                             VerticalAlignment="Center"/>
-                                                            <TextBlock Text="{Binding ExamDate, StringFormat='{}{0:dd MMM yyyy}'}"
-                                                                       Margin="5,0,0,0"
-                                                                       Style="{StaticResource ChipText}"/>
+                                                            <mi:MaterialIcon Kind="CalendarClock" Width="14" Height="14" Foreground="{DynamicResource SubtleBrush}" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="{Binding ExamDate, StringFormat='{}{0:dd MMMM yyyy}'}" Margin="6,0,0,0" Style="{StaticResource ChipText}" FontWeight="SemiBold"/>
                                                         </StackPanel>
                                                     </Border>
-
-                                                    <Border Style="{StaticResource DashboardMetaChipStyle}" Margin="8,0,0,0">
-                                                        <TextBlock Text="{Binding CourseName}"
-                                                                   Style="{StaticResource ChipText}"
-                                                                   TextTrimming="CharacterEllipsis"
-                                                                   MaxWidth="260"/>
+                                                    <Border Style="{StaticResource DashboardMetaChipStyle}" Margin="10,0,0,0">
+                                                        <TextBlock Text="{Binding CourseName}" Style="{StaticResource ChipText}" FontWeight="SemiBold"/>
                                                     </Border>
                                                 </StackPanel>
-
-                                                <TextBlock Text="{Binding ExamTitle}"
-                                                           FontSize="16.5"
-                                                           FontWeight="SemiBold"
-                                                           Foreground="{DynamicResource TextPrimaryBrush}"
-                                                           TextTrimming="CharacterEllipsis"/>
-                                                <TextBlock Text="Ölçüm güvenilirliği ve öğrenim çıktısı riskleri için detaylı analize geçin."
-                                                           FontSize="12"
-                                                           Foreground="{DynamicResource SubtleBrush}"
-                                                           Margin="0,4,0,0"
-                                                           TextWrapping="Wrap"/>
-
-
+                                                <TextBlock Text="Güvenilirlik ve öğrenim çıktısı riskleri için detaylı analize geçin." FontSize="13" Foreground="{DynamicResource SubtleBrush}" TextWrapping="Wrap"/>
                                             </StackPanel>
 
-                                            <StackPanel Grid.Column="1"
-                                                        Orientation="Horizontal"
-                                                        VerticalAlignment="Top"
-                                                        Margin="0,4,0,0">
-                                                <StackPanel Width="82" HorizontalAlignment="Right">
-                                                    <TextBlock Text="{Binding TotalStudents}"
-                                                               FontFamily="Geist Mono, JetBrains Mono, Consolas, Menlo, monospace"
-                                                               FontSize="18"
-                                                               FontWeight="Medium"
-                                                               Foreground="{DynamicResource TextPrimaryBrush}"
-                                                               HorizontalAlignment="Right"/>
-                                                    <TextBlock Text="ÖĞRENCİ"
-                                                               Style="{StaticResource DashboardLabelCapsStyle}"
-                                                               FontSize="10.5"
-                                                               HorizontalAlignment="Right"/>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <StackPanel Width="80" HorizontalAlignment="Center" Margin="0,0,16,0">
+                                                    <TextBlock Text="{Binding TotalStudents}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
+                                                    <TextBlock Text="ÖĞRENCİ" Style="{StaticResource DashboardLabelCapsStyle}" HorizontalAlignment="Center"/>
                                                 </StackPanel>
-                                                <StackPanel Width="74" HorizontalAlignment="Right">
-                                                    <TextBlock Text="{Binding TotalQuestions}"
-                                                               FontFamily="Geist Mono, JetBrains Mono, Consolas, Menlo, monospace"
-                                                               FontSize="18"
-                                                               FontWeight="Medium"
-                                                               Foreground="{DynamicResource TextPrimaryBrush}"
-                                                               HorizontalAlignment="Right"/>
-                                                    <TextBlock Text="SORU"
-                                                               Style="{StaticResource DashboardLabelCapsStyle}"
-                                                               FontSize="10.5"
-                                                               HorizontalAlignment="Right"/>
+                                                <StackPanel Width="80" HorizontalAlignment="Center" Margin="0,0,16,0">
+                                                    <TextBlock Text="{Binding TotalQuestions}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
+                                                    <TextBlock Text="SORU" Style="{StaticResource DashboardLabelCapsStyle}" HorizontalAlignment="Center"/>
                                                 </StackPanel>
-                                                <StackPanel Width="112" HorizontalAlignment="Right">
-                                                    <TextBlock Text="{Binding AverageSuccessRate, StringFormat={}{0:N1}%}"
-                                                               FontFamily="Geist Mono, JetBrains Mono, Consolas, Menlo, monospace"
-                                                               FontSize="18"
-                                                               FontWeight="Medium"
-                                                               Foreground="{DynamicResource PrimaryBrush}"
-                                                               HorizontalAlignment="Right"/>
-                                                    <TextBlock Text="ORT. BAŞARI"
-                                                               Style="{StaticResource DashboardLabelCapsStyle}"
-                                                               FontSize="10.5"
-                                                               HorizontalAlignment="Right"/>
+                                                <StackPanel Width="90" HorizontalAlignment="Center">
+                                                    <TextBlock Text="{Binding AverageSuccessRate, StringFormat={}{0:N1}%}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}" HorizontalAlignment="Center"/>
+                                                    <TextBlock Text="BAŞARI" Style="{StaticResource DashboardLabelCapsStyle}" HorizontalAlignment="Center"/>
                                                 </StackPanel>
                                             </StackPanel>
                                         </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
 
+                    <!-- SAĞ: HIZLI İŞLEMLER -->
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                        <TextBlock Grid.Row="0" Text="Hızlı İşlemler" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                        <StackPanel Grid.Row="1">
+                            <!-- Optik Okuma -->
+                            <Border Style="{StaticResource QuickActionCardStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10" Background="{DynamicResource PrimaryBrush}" VerticalAlignment="Center">
+                                        <mi:MaterialIcon Kind="Scanner" Width="20" Height="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="14,0,0,0">
+                                        <TextBlock Text="Optik Okuma" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <TextBlock Text="Formları tara ve içeri aktar" FontSize="12.5" Foreground="{DynamicResource SubtleBrush}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <mi:MaterialIcon Grid.Column="2" Kind="ChevronRight" Width="20" Height="20" Foreground="{DynamicResource SubtleBrush}" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Sınav Yönetimi -->
+                            <Border Style="{StaticResource QuickActionCardStyle}" Margin="0,4,0,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" CornerRadius="10" Background="{DynamicResource SecondaryBrush}" VerticalAlignment="Center">
+                                        <mi:MaterialIcon Kind="FileDocumentEditOutline" Width="20" Height="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="14,0,0,0">
+                                        <TextBlock Text="Sınav Yönetimi" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <TextBlock Text="Yeni sınav oluştur veya düzenle" FontSize="12.5" Foreground="{DynamicResource SubtleBrush}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <mi:MaterialIcon Grid.Column="2" Kind="ChevronRight" Width="20" Height="20" Foreground="{DynamicResource SubtleBrush}" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Sistem Durumu -->
+                            <Border Background="{DynamicResource CardBgBrush}" BorderBrush="{DynamicResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="14" Padding="16,16" Margin="0,12,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="Sistem Durumu" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+                                    
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Ellipse Width="8" Height="8" Fill="{DynamicResource SuccessBrush}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Veritabanı bağlantısı aktif" FontSize="13" Foreground="{DynamicResource SubtleBrush}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Ellipse Width="8" Height="8" Fill="{DynamicResource SuccessBrush}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Yapay Zeka (AI) servisi çevrimiçi" FontSize="13" Foreground="{DynamicResource SubtleBrush}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Width="8" Height="8" Fill="{DynamicResource WarningBrush}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Bekleyen 2 analiz raporu" FontSize="13" Foreground="{DynamicResource SubtleBrush}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- AI Assistant Banner -->
+                            <Border Background="{DynamicResource PrimaryLightBrush}" BorderBrush="{DynamicResource PrimaryBrush}" BorderThickness="1" CornerRadius="14" Padding="16,16" Margin="0,20,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <mi:MaterialIcon Kind="RobotOutline" Width="32" Height="32" Foreground="{DynamicResource PrimaryBrush}" VerticalAlignment="Center"/>
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="EduAI Asistanınız Hazır" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}"/>
+                                        <TextBlock Text="Sağ alttaki butondan ulaşabilirsiniz." FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </Grid>
         </ScrollViewer>

@@ -20,6 +20,8 @@ namespace EduAnalytics.UI;
 
 public partial class App : Application
 {
+    public static bool IsAdminMode { get; set; }
+
     public static IServiceProvider Services { get; private set; } = null!;
     public static IConfiguration Configuration { get; private set; } = null!;
 
@@ -45,7 +47,7 @@ public partial class App : Application
         DispatcherUnhandledException += (s, args) =>
         {
             Log.Fatal(args.Exception, "A fatal WPF UI exception occurred.");
-            AppMessageBox.Show($"Beklenmedik bir hata oluştu:\n\n{args.Exception.Message}\n\nDetaylar log dosyasına kaydedildi.", "Sistem Hatası", MessageBoxButton.OK, MessageBoxImage.Error);
+            AppMessageBox.Show($"Beklenmedik bir hata oluÅŸtu:\n\n{args.Exception.Message}\n\nDetaylar log dosyasÄ±na kaydedildi.", "Sistem HatasÄ±", MessageBoxButton.OK, MessageBoxImage.Error);
             args.Handled = true; // Prevent application crash if possible
         };
 
@@ -66,7 +68,7 @@ public partial class App : Application
             ConfigureServices(services);
             Services = services.BuildServiceProvider();
 
-            // Splash ve giriş ekranı sistemin o anki Light/Dark modunu takip eder.
+            // Splash ve giriÅŸ ekranÄ± sistemin o anki Light/Dark modunu takip eder.
             var themeService = Services.GetRequiredService<IThemeService>();
             themeService.ApplySystemForStartup();
 
@@ -95,10 +97,10 @@ public partial class App : Application
             if (startupError != null)
             {
                 splash.Close();
-                Log.Fatal(startupError, "Veritabanı başlatılamadı.");
+                Log.Fatal(startupError, "VeritabanÄ± baÅŸlatÄ±lamadÄ±.");
                 AppMessageBox.Show(
-                    $"Veritabanı başlatılamadı:\n\n{startupError.GetType().Name}: {startupError.Message}\n\n{startupError.InnerException?.Message}\n\nLocalDB hala açılmıyorsa SQL Server LocalDB instance'ını yeniden başlatmayı deneyin.",
-                    "Başlangıç Hatası",
+                    $"VeritabanÄ± baÅŸlatÄ±lamadÄ±:\n\n{startupError.GetType().Name}: {startupError.Message}\n\n{startupError.InnerException?.Message}\n\nLocalDB hala aÃ§Ä±lmÄ±yorsa SQL Server LocalDB instance'Ä±nÄ± yeniden baÅŸlatmayÄ± deneyin.",
+                    "BaÅŸlangÄ±Ã§ HatasÄ±",
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 Shutdown();
                 return;
@@ -113,7 +115,7 @@ public partial class App : Application
                 return;
             }
 
-            // Ana uygulama açılırken kullanıcının uygulama içi tema tercihi varsa geri yüklenir.
+            // Ana uygulama aÃ§Ä±lÄ±rken kullanÄ±cÄ±nÄ±n uygulama iÃ§i tema tercihi varsa geri yÃ¼klenir.
             themeService.LoadAndApply();
 
             var mainWindow = Services.GetRequiredService<MainWindow>();
@@ -123,10 +125,10 @@ public partial class App : Application
         }
         catch (Exception ex)
         {
-            Log.Fatal(ex, "Uygulama başlatılırken beklenmeyen bir hata oluştu.");
+            Log.Fatal(ex, "Uygulama baÅŸlatÄ±lÄ±rken beklenmeyen bir hata oluÅŸtu.");
             AppMessageBox.Show(
-                $"Uygulama başlatılırken beklenmeyen bir hata oluştu:\n\n{ex.GetType().Name}: {ex.Message}\n\n{ex.InnerException?.Message}",
-                "Başlangıç Hatası",
+                $"Uygulama baÅŸlatÄ±lÄ±rken beklenmeyen bir hata oluÅŸtu:\n\n{ex.GetType().Name}: {ex.Message}\n\n{ex.InnerException?.Message}",
+                "BaÅŸlangÄ±Ã§ HatasÄ±",
                 MessageBoxButton.OK, MessageBoxImage.Error);
             Application.Current.Shutdown();
         }
@@ -155,12 +157,12 @@ public partial class App : Application
             catch (Exception ex) when (attempt < maxAttempts && IsTransientLocalDbStartupError(ex))
             {
                 lastError = ex;
-                Log.Warning(ex, "Veritabanı başlatılamadı, tekrar deneniyor ({Attempt}/{MaxAttempts})", attempt, maxAttempts);
+                Log.Warning(ex, "VeritabanÄ± baÅŸlatÄ±lamadÄ±, tekrar deneniyor ({Attempt}/{MaxAttempts})", attempt, maxAttempts);
                 Thread.Sleep(TimeSpan.FromMilliseconds(650 * attempt));
             }
         }
 
-        throw lastError ?? new InvalidOperationException("Veritabanı başlatılamadı.");
+        throw lastError ?? new InvalidOperationException("VeritabanÄ± baÅŸlatÄ±lamadÄ±.");
     }
 
     private static bool IsTransientLocalDbStartupError(Exception ex)
@@ -187,13 +189,13 @@ public partial class App : Application
         // Serilog DI
         services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
-        // DbContext - Transient: Her servis çağrısı kendi context'ini alır.
+        // DbContext - Transient: Her servis Ã§aÄŸrÄ±sÄ± kendi context'ini alÄ±r.
         services.AddDbContext<EduAnalyticsDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
             ServiceLifetime.Transient);
 
         // Business Services - Transient
-        // ── FAZ 1 servisleri ──
+        // â”€â”€ FAZ 1 servisleri â”€â”€
         services.AddTransient<IExamAnalysisService, ExamAnalysisService>();
         services.AddTransient<IDistractorAnalysisService, DistractorAnalysisService>();
         services.AddTransient<ITopicPerformanceService, TopicPerformanceService>();
@@ -202,7 +204,7 @@ public partial class App : Application
         services.AddTransient<IAnswerEntryService, AnswerEntryService>();
         services.AddTransient<ILearningOutcomePerformanceService, LearningOutcomePerformanceService>();
 
-        // ── FAZ 2 servisleri (ASOS yenileme) ──
+        // â”€â”€ FAZ 2 servisleri (ASOS yenileme) â”€â”€
         services.AddTransient<IQuestionBankService, QuestionBankService>();
         services.AddTransient<ILearningOutcomeService, LearningOutcomeService>();
         services.AddTransient<IProgramOutcomeService, ProgramOutcomeService>();
@@ -213,16 +215,21 @@ public partial class App : Application
         services.AddTransient<IAcademicStructureService, AcademicStructureService>();
         services.AddTransient<IExamStatisticsService, ExamStatisticsService>();
         services.AddTransient<IItemAnalysisService, ItemAnalysisService>();
+        services.AddTransient<IDataImportService, DataImportService>();
+        services.AddTransient<IDataExportService, DataExportService>();
+        services.AddTransient<IMyCoursesService, MyCoursesService>();
 
         // ViewModels
         services.AddTransient<MainViewModel>();
         services.AddTransient<DashboardViewModel>();
+        services.AddTransient<MyCoursesViewModel>();
+        services.AddTransient<AdminExportViewModel>();
         services.AddTransient<ExamCalendarViewModel>();
         services.AddTransient<ExamAnalysisViewModel>();
         services.AddTransient<ExamCreateViewModel>();
         services.AddTransient<AnswerEntryViewModel>();
 
-        // FAZ 3 — Yeni ASOS ekranları
+        // FAZ 3 â€” Yeni ASOS ekranlarÄ±
         services.AddTransient<QuestionBankViewModel>();
         services.AddTransient<LearningOutcomeManagementViewModel>();
         services.AddTransient<ProgramOutcomeManagementViewModel>();
@@ -231,22 +238,22 @@ public partial class App : Application
         services.AddTransient<StudentManagementViewModel>();
         services.AddTransient<AcademicStructureViewModel>();
 
-        // FAZ 4 — İleri özellikler
+        // FAZ 4 â€” Ä°leri Ã¶zellikler
         services.AddTransient<QuestionGroupEditorViewModel>();
         services.AddTransient<ExamFromBankViewModel>();
         services.AddTransient<ExamManagementViewModel>();
         services.AddTransient<QuestionEditDialogViewModel>();
         services.AddTransient<SingleQuestionCreateViewModel>();
 
-        // FAZ 5 — Rubric (klasik soru kriter-bazlı puanlama)
+        // FAZ 5 â€” Rubric (klasik soru kriter-bazlÄ± puanlama)
         services.AddTransient<IRubricService, RubricService>();
         services.AddTransient<RubricGradeDialogViewModel>();
 
-        // FAZ 6 — Optik okuma (PaddleOCR + OMR)
+        // FAZ 6 â€” Optik okuma (PaddleOCR + OMR)
         services.AddSingleton<IOpticalFormReader, OpticalFormReader>();
         services.AddTransient<OpticalReadingViewModel>();
 
-        // UI altyapı
+        // UI altyapÄ±
         services.AddSingleton<IAppLogService, AppLogService>();
         services.AddSingleton<ToastService>();
         services.AddSingleton<IThemeService, ThemeService>();

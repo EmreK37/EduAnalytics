@@ -28,8 +28,8 @@ public partial class UserSettingsDialog : Window
     {
         var dialog = new OpenFileDialog
         {
-            Title = "Profil fotoğrafı seç",
-            Filter = "Görsel dosyaları|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.webp|Tüm dosyalar|*.*",
+            Title = "Profil fotoÄŸrafÄ± seÃ§",
+            Filter = "GÃ¶rsel dosyalarÄ±|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.webp|TÃ¼m dosyalar|*.*",
             CheckFileExists = true
         };
 
@@ -65,13 +65,13 @@ public partial class UserSettingsDialog : Window
 
         if (string.IsNullOrWhiteSpace(username))
         {
-            ShowStatus("Kullanıcı adını girmediniz.");
+            ShowStatus("KullanÄ±cÄ± adÄ±nÄ± girmediniz.");
             return;
         }
 
         if (wantsPasswordChange && newPassword != confirmPassword)
         {
-            ShowStatus("Yeni şifre tekrarı aynı değil.");
+            ShowStatus("Yeni ÅŸifre tekrarÄ± aynÄ± deÄŸil.");
             return;
         }
 
@@ -138,6 +138,48 @@ public partial class UserSettingsDialog : Window
         return UserGender.Unspecified;
     }
 
+    private async void ImportPackage_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFileDialog
+        {
+            Title = "Yönetici Veri Paketi Seç",
+            Filter = "EduAnalytics Data (*.edudata)|*.edudata|JSON Dosyaları (*.json)|*.json|Tüm Dosyalar (*.*)|*.*",
+            CheckFileExists = true
+        };
+
+        if (dialog.ShowDialog(this) != true) return;
+
+        try
+        {
+            HideStatus();
+            StatusText.Text = "Veriler içe aktarılıyor, lütfen bekleyin...";
+            StatusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E0F2FE"));
+            StatusText.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0284C7"));
+            StatusBorder.Visibility = Visibility.Visible;
+
+            var json = await File.ReadAllTextAsync(dialog.FileName);
+            var package = System.Text.Json.JsonSerializer.Deserialize<EduAnalytics.Business.Dtos.AdminExportPackageDto>(json, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (package == null)
+            {
+                ShowStatus("Geçersiz paket formatı.");
+                return;
+            }
+
+            var importService = App.Services.GetRequiredService<EduAnalytics.Business.Services.Interfaces.IDataImportService>();
+            var result = await importService.ImportAdminPackageAsync(package);
+
+            StatusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DCFCE7"));
+            StatusText.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#16A34A"));
+            StatusText.Text = $"{package.Institution} paketinden {result.CoursesAdded} ders, {result.StudentsAdded} öğrenci, {result.TopicsAdded} konu ve {result.QuestionsAdded} soru başarıyla içe aktarıldı.";
+        }
+        catch (Exception ex)
+        {
+            StatusBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FEE2E2"));
+            StatusText.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DC2626"));
+            ShowStatus($"İçe aktarma hatası: {ex.Message}");
+        }
+    }
     private void ShowStatus(string message)
     {
         StatusText.Text = message;

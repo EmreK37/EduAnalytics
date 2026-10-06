@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="EduAnalytics.UI.Views.AdminExportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mi="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
+             Background="{DynamicResource BackgroundBrush}">
+    <Grid Style="{StaticResource PageRootGridStyle}">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="600">
+            <mi:MaterialIcon Kind="DatabaseExport" Width="80" Height="80" Foreground="{DynamicResource PrimaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,24"/>
+            <TextBlock Text="Sistem Veritabanı Paketleme (Admin Merkezi)" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" TextAlignment="Center" Margin="0,0,0,16"/>
+            <TextBlock Text="Bu ekran sadece sistem yöneticilerine görünür. Buradan sistemdeki tüm dersleri, konuları, soru bankasını, öğrencileri ve sınav şablonlarını tek bir şifreli pakete dönüştürebilirsiniz. Elde edilen .edudata dosyasını öğretmenlerinize dağıtarak sistemlerini tek tıklamayla hazır hale getirmelerini sağlayabilirsiniz." 
+                       FontSize="16" Foreground="{DynamicResource TextSecondaryBrush}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,40"/>
+            
+            <Button Content="Tüm Veritabanını Dışa Aktar (.edudata)"
+                    Command="{Binding ExportDataCommand}"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Height="50" FontSize="16" FontWeight="Bold" Padding="32,0"/>
+            
+            <ProgressBar IsIndeterminate="True" Height="4" Margin="0,24,0,0" Visibility="{Binding IsExporting, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
