@@ -1,0 +1,185 @@
+<UserControl x:Class="EduAnalytics.UI.Views.ProgramOutcomeReportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EduAnalytics.UI.ViewModels"
+             xmlns:views="clr-namespace:EduAnalytics.UI.Views"
+             xmlns:ctl="clr-namespace:EduAnalytics.UI.Controls"
+             d:DataContext="{d:DesignInstance Type=vm:ProgramOutcomeReportViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+
+    <Grid Style="{StaticResource PageRootGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ctl:PageHeader Grid.Row="0"
+                        Icon="ChartLineVariant"
+                        Title="Program Çıktısı Başarı Raporu"
+                        Subtitle="PÇ → ÖÇ → Soru hiyerarşisinde sınavlardaki başarı oranları."/>
+
+        <Border Grid.Row="1" Style="{StaticResource BentoCardStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="Program"
+                           VerticalAlignment="Center"
+                           FontWeight="SemiBold"
+                           Margin="0,0,12,0"/>
+                <ComboBox Grid.Column="1"
+                          ItemsSource="{Binding Programs}"
+                          SelectedItem="{Binding SelectedProgram}"
+                          DisplayMemberPath="Name"
+                          MaxWidth="360"
+                          HorizontalAlignment="Left"/>
+                <Button Grid.Column="2"
+                        Content="Raporu Yenile"
+                        Command="{Binding GenerateReportCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Margin="14,0,0,0"/>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Style="{StaticResource PageScrollViewerStyle}" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Reports}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource BentoCardStyle}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0"
+                                            Background="{DynamicResource PrimaryBrush}"
+                                            CornerRadius="{DynamicResource RadiusLg}"
+                                            Padding="10,6"
+                                            VerticalAlignment="Top">
+                                        <TextBlock Text="{Binding ProgramOutcomeCode}"
+                                                   Foreground="White"
+                                                   FontWeight="SemiBold"
+                                                   FontSize="14"/>
+                                    </Border>
+
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding ProgramOutcomeDescription}"
+                                               TextWrapping="Wrap"
+                                               VerticalAlignment="Center"
+                                               Margin="14,0"
+                                               FontSize="14"
+                                               FontWeight="SemiBold"/>
+
+                                    <StackPanel Grid.Column="2" HorizontalAlignment="Right">
+                                        <TextBlock Style="{StaticResource MetricValueStyle}"
+                                                   Foreground="{DynamicResource SuccessBrush}"
+                                                   HorizontalAlignment="Right">
+                                            <Run Text="%"/>
+                                            <Run Text="{Binding OverallSuccessRate}"/>
+                                        </TextBlock>
+                                        <TextBlock Style="{StaticResource MetricLabelStyle}"
+                                                   Text="GENEL BAŞARI"
+                                                   HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Border Style="{StaticResource CardSubtleStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="Bağlı Öğrenim Çıktıları"
+                                                   FontWeight="SemiBold"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   Margin="0,0,0,10"/>
+
+                                        <ItemsControl ItemsSource="{Binding LinkedLearningOutcomes}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                                            BorderThickness="0,0,0,1"
+                                                            Padding="0,10">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="80"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="90"/>
+                                                                <ColumnDefinition Width="70"/>
+                                                                <ColumnDefinition Width="80"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <Border Grid.Column="0"
+                                                                    Background="{DynamicResource PrimaryLightBrush}"
+                                                                    BorderBrush="{DynamicResource PrimaryBrush}"
+                                                                    BorderThickness="1"
+                                                                    CornerRadius="{DynamicResource RadiusLg}"
+                                                                    Padding="6,2"
+                                                                    HorizontalAlignment="Left"
+                                                                    VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding Code}"
+                                                                           Foreground="{DynamicResource PrimaryDarkBrush}"
+                                                                           FontWeight="SemiBold"
+                                                                           FontSize="11"/>
+                                                            </Border>
+
+                                                            <StackPanel Grid.Column="1" Margin="10,0" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding Name}" FontSize="13"/>
+                                                                <TextBlock Text="{Binding CourseName}"
+                                                                           FontSize="11"
+                                                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                                                           Margin="0,2,0,0"/>
+                                                            </StackPanel>
+
+                                                            <TextBlock Grid.Column="2"
+                                                                       FontSize="11"
+                                                                       VerticalAlignment="Center"
+                                                                       Foreground="{DynamicResource TextSecondaryBrush}">
+                                                                <Run Text="Katkı: "/>
+                                                                <Run Text="{Binding ContributionLevel}" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                                                <Run Text=" / 5"/>
+                                                            </TextBlock>
+
+                                                            <TextBlock Grid.Column="3"
+                                                                       FontSize="11"
+                                                                       VerticalAlignment="Center"
+                                                                       Foreground="{DynamicResource TextSecondaryBrush}">
+                                                                <Run Text="{Binding QuestionCount}" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                                                <Run Text=" soru"/>
+                                                            </TextBlock>
+
+                                                            <TextBlock Grid.Column="4"
+                                                                       VerticalAlignment="Center"
+                                                                       FontWeight="Bold"
+                                                                       FontSize="14"
+                                                                       Foreground="{DynamicResource SuccessBrush}"
+                                                                       HorizontalAlignment="Right">
+                                                                <Run Text="%"/>
+                                                                <Run Text="{Binding SuccessRate}"/>
+                                                            </TextBlock>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <views:LoadingOverlay Grid.RowSpan="3"
+                              Message="Rapor üretiliyor..."
+                              Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}"/>
+    </Grid>
+</UserControl>

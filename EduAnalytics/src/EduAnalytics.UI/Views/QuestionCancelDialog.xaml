@@ -1,0 +1,56 @@
+﻿<Window x:Class="EduAnalytics.UI.Views.QuestionCancelDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Soruyu İptal Et"
+        Height="320" Width="520"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource PageBgBrush}">
+
+    <Grid Style="{StaticResource PageRootGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="22,20,22,12">
+            <TextBlock Text="Soruyu İptal Et"
+                       Style="{StaticResource HeadingStyle}"
+                       Foreground="{DynamicResource DangerBrush}"/>
+
+            <TextBlock x:Name="QuestionInfoText"
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       Margin="0,0,0,14"/>
+
+            <TextBlock Text="İptal Sebebi (opsiyonel)" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="ReasonBox"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     MinHeight="68"
+                     VerticalContentAlignment="Top"/>
+
+            <Border Style="{StaticResource AlertInfoStyle}" Margin="0,12,0,0">
+                <TextBlock FontSize="12"
+                           Foreground="{DynamicResource PrimaryDarkBrush}"
+                           TextWrapping="Wrap">
+                    İptal edilen soru analizden hariç tutulur; tüm öğrencilerin bu sorudaki cevabı puanlamaya dahil edilmez.
+                </TextBlock>
+            </Border>
+        </StackPanel>
+
+        <Border Grid.Row="1"
+                Style="{StaticResource DialogFooterStyle}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Vazgeç"
+                        Click="OnCancelClick"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Margin="0,0,8,0"/>
+                <Button Content="Soruyu İptal Et"
+                        Click="OnConfirmClick"
+                        Style="{StaticResource DangerPrimaryButtonStyle}"
+                        IsDefault="True"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

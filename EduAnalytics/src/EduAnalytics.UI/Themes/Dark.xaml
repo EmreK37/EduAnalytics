@@ -1,0 +1,153 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--   PRIMARY ACCENT — Indigo (dark: lighter tone)     -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <SolidColorBrush x:Key="PrimaryBrush"        Color="#7C5CFF" po:Freeze="False"/>
+    <SolidColorBrush x:Key="PrimaryDarkBrush"    Color="#5E45D9" po:Freeze="False"/>
+    <SolidColorBrush x:Key="PrimaryLightBrush"   Color="#241D3D" po:Freeze="False"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--   SEMANTIC (dark: 400 tonu — koyu bg üzerinde okunabilir) -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <SolidColorBrush x:Key="SuccessBrush"        Color="#34D399" po:Freeze="False"/>  <!-- emerald-400 -->
+    <SolidColorBrush x:Key="WarningBrush"        Color="#FBBF24" po:Freeze="False"/>  <!-- amber-400   -->
+    <SolidColorBrush x:Key="DangerBrush"         Color="#F87171" po:Freeze="False"/>  <!-- red-400     -->
+    <SolidColorBrush x:Key="InfoBrush"           Color="#60A5FA" po:Freeze="False"/>  <!-- blue-400    -->
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--   TEXT                                              -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <SolidColorBrush x:Key="TextPrimaryBrush"    Color="#F4F4F5" po:Freeze="False"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush"  Color="#A1A1AA" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SubtleBrush"         Color="#71717A" po:Freeze="False"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--   BORDERS                                           -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <SolidColorBrush x:Key="BorderBrush"         Color="#2D2D33" po:Freeze="False"/>
+    <SolidColorBrush x:Key="BorderSubtleBrush"   Color="#232328" po:Freeze="False"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--   SURFACES                                          -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <SolidColorBrush x:Key="CardBgBrush"         Color="#18181B" po:Freeze="False"/>
+    <SolidColorBrush x:Key="PageBgBrush"         Color="#0A0A0B" po:Freeze="False"/>
+    <SolidColorBrush x:Key="TopBarBgBrush"       Color="#0E0E10" po:Freeze="False"/>
+    <SolidColorBrush x:Key="HoverBgBrush"        Color="#1F1F23" po:Freeze="False"/>
+    <SolidColorBrush x:Key="ClickableCardHoverBrush" Color="#1F1F23" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SurfaceSunkenBrush"  Color="#101012" po:Freeze="False"/>
+    <SolidColorBrush x:Key="AiSummaryBgBrush"    Color="#1E1830" po:Freeze="False"/>
+    <SolidColorBrush x:Key="AiSummaryBorderBrush" Color="#3A2F66" po:Freeze="False"/>
+    <SolidColorBrush x:Key="AiSummaryRuleBrush"  Color="#352B5F" po:Freeze="False"/>
+    <SolidColorBrush x:Key="AiFloatingBgBrush"   Color="#202027" po:Freeze="False"/>
+    <SolidColorBrush x:Key="AiFloatingHoverBrush" Color="#272532" po:Freeze="False"/>
+    <SolidColorBrush x:Key="AiFloatingBorderBrush" Color="#3A354C" po:Freeze="False"/>
+    <SolidColorBrush x:Key="AiFloatingTextBrush" Color="#F4F4F5" po:Freeze="False"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--   SIDEBAR                                            -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <SolidColorBrush x:Key="SidebarBgBrush"          Color="#0E0E10" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SidebarBorderBrush"      Color="#232328" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SidebarHoverBrush"        Color="#1F1F23" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SidebarActiveBgBrush"     Color="#241D3D" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SidebarTextBrush"         Color="#A1A1AA" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SidebarActiveTextBrush"   Color="#F4F4F5" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SidebarMutedBrush"        Color="#71717A" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SidebarIconBrush"         Color="#A1A1AA" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SidebarIconActiveBrush"   Color="#7C5CFF" po:Freeze="False"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--   INTERACTION                                       -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <SolidColorBrush x:Key="ScrollBarThumbBrush"      Color="#3A3A42" po:Freeze="False"/>
+    <SolidColorBrush x:Key="ScrollBarThumbHoverBrush" Color="#52525B" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SubtleHoverBrush"         Color="#1F1F23" po:Freeze="False"/>
+    <SolidColorBrush x:Key="GhostHoverBrush"          Color="#1F1F23" po:Freeze="False"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--   COMPONENT TOKENS                                  -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <SolidColorBrush x:Key="DataGridHoverBrush"       Color="#1F1F23" po:Freeze="False"/>
+    <SolidColorBrush x:Key="DataGridGridLineBrush"    Color="#232328" po:Freeze="False"/>
+    <SolidColorBrush x:Key="DangerSubtleBrush"        Color="#3A1717" po:Freeze="False"/>
+    <SolidColorBrush x:Key="CardSubtleBgBrush"        Color="#1F1F23" po:Freeze="False"/>
+    <SolidColorBrush x:Key="WarningSubtleBgBrush"     Color="#35250C" po:Freeze="False"/>
+    <SolidColorBrush x:Key="WarningSubtleBorderBrush" Color="#92400E" po:Freeze="False"/>  <!-- amber-800  -->
+    <SolidColorBrush x:Key="WarningSubtleTextBrush"   Color="#FCD34D" po:Freeze="False"/>  <!-- amber-300  -->
+    <SolidColorBrush x:Key="SuccessSubtleBgBrush"     Color="#102A22" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SuccessSubtleBorderBrush" Color="#065F46" po:Freeze="False"/>  <!-- emerald-800 -->
+    <SolidColorBrush x:Key="InfoSubtleBgBrush"        Color="#17233A" po:Freeze="False"/>
+    <SolidColorBrush x:Key="InfoSubtleBorderBrush"    Color="#1E40AF" po:Freeze="False"/>  <!-- blue-800    -->
+    <SolidColorBrush x:Key="InfoSubtleTextBrush"      Color="#93C5FD" po:Freeze="False"/>  <!-- blue-300    -->
+    <SolidColorBrush x:Key="DangerSubtleBorderBrush"  Color="#7F1D1D" po:Freeze="False"/>  <!-- red-900     -->
+    <SolidColorBrush x:Key="DangerEmphasisBrush"      Color="#FCA5A5" po:Freeze="False"/>  <!-- red-300     -->
+    <SolidColorBrush x:Key="SuccessEmphasisBrush"     Color="#6EE7B7" po:Freeze="False"/>  <!-- emerald-300 -->
+    <SolidColorBrush x:Key="SuccessSubtleTextBrush"   Color="#6EE7B7" po:Freeze="False"/>  <!-- emerald-300 -->
+    <SolidColorBrush x:Key="ChipBgBrush"              Color="#26262B" po:Freeze="False"/>
+    <SolidColorBrush x:Key="ChipTextBrush"            Color="#A1A1AA" po:Freeze="False"/>
+    <SolidColorBrush x:Key="FocusRingBrush"           Color="#5E45D9" po:Freeze="False"/>
+    <SolidColorBrush x:Key="OverlayBrush"             Color="#A6000000" po:Freeze="False"/> <!-- black 65% -->
+    <SolidColorBrush x:Key="TooltipBgBrush"           Color="#0F172A" po:Freeze="False"/>
+    <SolidColorBrush x:Key="TooltipFgBrush"           Color="#F1F5F9" po:Freeze="False"/>
+
+    <!-- Splash / login başlangıç paleti — macOS dark referansı -->
+    <SolidColorBrush x:Key="SplashBackgroundBrush" Color="#0A0A0B" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SplashForegroundBrush" Color="#F4F4F5" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SplashMutedBrush"      Color="#A1A1AA" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SplashSubtleBrush"     Color="#71717A" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SplashLineBrush"       Color="#2D2D33" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SplashLoaderBrush"     Color="#7C5CFF" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SplashNoiseBrush"      Color="#F4F4F5" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SplashPanelBrush"      Color="#18181B" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SplashInputBrush"      Color="#18181B" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SplashActionBrush"     Color="#7C5CFF" po:Freeze="False"/>
+    <SolidColorBrush x:Key="SplashActionTextBrush" Color="#FFFFFF" po:Freeze="False"/>
+    <Color x:Key="SplashLogoStartColor">#7D7BFF</Color>
+    <Color x:Key="SplashLogoEndColor">#5E5CE6</Color>
+
+    <!-- Login ekranı — macOS dark referansı -->
+    <SolidColorBrush x:Key="LoginWindowBrush"      Color="#18181B" po:Freeze="False"/>
+    <SolidColorBrush x:Key="LoginSidebarBrush"     Color="#141417" po:Freeze="False"/>
+    <SolidColorBrush x:Key="LoginTextBrush"        Color="#F4F4F5" po:Freeze="False"/>
+    <SolidColorBrush x:Key="LoginMutedBrush"       Color="#A1A1AA" po:Freeze="False"/>
+    <SolidColorBrush x:Key="LoginAccentBrush"      Color="#7C5CFF" po:Freeze="False"/>
+    <SolidColorBrush x:Key="LoginBorderBrush"      Color="#2D2D33" po:Freeze="False"/>
+    <SolidColorBrush x:Key="LoginInputBrush"       Color="#18181B" po:Freeze="False"/>
+    <SolidColorBrush x:Key="LoginInputBorderBrush" Color="#2D2D33" po:Freeze="False"/>
+    <SolidColorBrush x:Key="LoginSecurityBrush"    Color="#241D3D" po:Freeze="False"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--   RADIUS TOKENS                                     -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <CornerRadius x:Key="RadiusSm">4</CornerRadius>
+    <CornerRadius x:Key="RadiusMd">6</CornerRadius>
+    <CornerRadius x:Key="RadiusLg">8</CornerRadius>
+    <CornerRadius x:Key="RadiusXl">12</CornerRadius>
+    <CornerRadius x:Key="Radius2Xl">16</CornerRadius>
+    <CornerRadius x:Key="RadiusFull">999</CornerRadius>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--   SPACING TOKENS (Thickness)                        -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <Thickness x:Key="Space4">4</Thickness>
+    <Thickness x:Key="Space8">8</Thickness>
+    <Thickness x:Key="Space12">12</Thickness>
+    <Thickness x:Key="Space16">16</Thickness>
+    <Thickness x:Key="Space20">20</Thickness>
+    <Thickness x:Key="Space24">24</Thickness>
+    <Thickness x:Key="Space32">32</Thickness>
+    <Thickness x:Key="Space48">48</Thickness>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--   ELEVATION / SHADOWS (dark: daha derin/koyu)       -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <DropShadowEffect x:Key="ShadowSm"  Color="#000000" Opacity="0.30" BlurRadius="4"  ShadowDepth="1" Direction="270"/>
+    <DropShadowEffect x:Key="ShadowMd"  Color="#000000" Opacity="0.40" BlurRadius="10" ShadowDepth="2" Direction="270"/>
+    <DropShadowEffect x:Key="ShadowLg"  Color="#000000" Opacity="0.50" BlurRadius="20" ShadowDepth="4" Direction="270"/>
+    <DropShadowEffect x:Key="ShadowXl"  Color="#000000" Opacity="0.60" BlurRadius="32" ShadowDepth="8" Direction="270"/>
+
+</ResourceDictionary>

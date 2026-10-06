@@ -1,0 +1,428 @@
+<UserControl x:Class="EduAnalytics.UI.Views.ProgramOutcomeMappingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EduAnalytics.UI.ViewModels"
+             xmlns:views="clr-namespace:EduAnalytics.UI.Views"
+             xmlns:ctl="clr-namespace:EduAnalytics.UI.Controls"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             d:DataContext="{d:DesignInstance Type=vm:ProgramOutcomeMappingViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+
+    <Grid Style="{StaticResource PageRootGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ctl:PageHeader Grid.Row="0"
+                        Icon="SwapHorizontal"
+                        Title="Program Çıktısı ↔ Öğrenim Çıktısı Eşleştirme"
+                        Subtitle="Program Çıktıları (PÇ) ile Öğrenim Çıktılarını (ÖÇ) eşleştirin. Bir ÖÇ birden fazla PÇ'ye katkı sağlayabilir. Katkı seviyesi 1 (düşük) ile 5 (yüksek) arasındadır."/>
+
+        <!-- Mesaj alanı -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,12">
+            <Border Style="{StaticResource AlertErrorStyle}"
+                    Margin="0,0,0,6"
+                    Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerEmphasisBrush}" TextWrapping="Wrap"/>
+            </Border>
+            <Border Style="{StaticResource AlertSuccessStyle}"
+                    Visibility="{Binding SuccessMessage, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding SuccessMessage}" Foreground="{DynamicResource SuccessEmphasisBrush}" TextWrapping="Wrap"/>
+            </Border>
+        </StackPanel>
+
+        <ScrollViewer Style="{StaticResource PageScrollViewerStyle}" Grid.Row="2"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+
+            <!-- ÜST: Program ve PÇ seçimi -->
+            <Border Style="{StaticResource BentoCardStyle}" Margin="0,0,0,14">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="260"/>
+                        <ColumnDefinition Width="18"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Program" Style="{StaticResource LabelStyle}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Program Çıktıları" Style="{StaticResource LabelStyle}"/>
+
+                    <ComboBox Grid.Row="1" Grid.Column="0"
+                              ItemsSource="{Binding Programs}"
+                              SelectedItem="{Binding SelectedProgram}"
+                              DisplayMemberPath="Name"/>
+
+                    <ListBox Grid.Row="1" Grid.Column="2"
+                             ItemsSource="{Binding ProgramOutcomes}"
+                             SelectedItem="{Binding SelectedProgramOutcome}"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             HorizontalContentAlignment="Stretch">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0,0,10,10"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border x:Name="bd"
+                                                    Background="Transparent"
+                                                    BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="{DynamicResource RadiusLg}"
+                                                    Padding="12,9"
+                                                    Width="260"
+                                                    MinHeight="82">
+                                                <ContentPresenter/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                </Trigger>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="bd" Property="Background" Value="{DynamicResource PrimaryLightBrush}"/>
+                                                    <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="{DynamicResource PrimaryBrush}"
+                                                CornerRadius="{DynamicResource RadiusLg}"
+                                                Padding="6,2"
+                                                Margin="0,0,8,0">
+                                            <TextBlock Text="{Binding Code}"
+                                                       Foreground="White"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="11"/>
+                                        </Border>
+                                        <TextBlock VerticalAlignment="Center"
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}">
+                                            <Run Text="{Binding LearningOutcomeCount}"/>
+                                            <Run Text=" ÖÇ"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Description}"
+                                               TextWrapping="Wrap"
+                                               Margin="0,6,0,0"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+                            Style="{StaticResource CardSubtleStyle}"
+                            Margin="0,8,0,0"
+                            Padding="10,8">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Katkı Düzeyi"
+                                       FontWeight="SemiBold"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       Margin="0,0,12,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock TextWrapping="Wrap"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       VerticalAlignment="Center">
+                                <Run Text="1 Çok Düşük"/>
+                                <Run Text=" · "/>
+                                <Run Text="2 Düşük"/>
+                                <Run Text=" · "/>
+                                <Run Text="3 Orta"/>
+                                <Run Text=" · "/>
+                                <Run Text="4 Yüksek"/>
+                                <Run Text=" · "/>
+                                <Run Text="5 Çok Yüksek"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- ALT: Eşleşmeler -->
+            <Border Style="{StaticResource BentoCardStyle}" Margin="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="Seçili PÇ"
+                                   Style="{StaticResource SubheadingStyle}"
+                                   Margin="0,0,10,0"/>
+                        <Border Background="{DynamicResource PrimaryBrush}"
+                                CornerRadius="{DynamicResource RadiusLg}"
+                                Padding="8,3"
+                                VerticalAlignment="Center"
+                                Margin="0,0,0,12"
+                                Visibility="{Binding SelectedProgramOutcome, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{Binding SelectedProgramOutcome.Code, FallbackValue='—'}"
+                                       Foreground="White"
+                                       FontWeight="SemiBold"
+                                       FontSize="12"/>
+                        </Border>
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding SelectedProgramOutcome.Description}"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               Margin="0,0,0,14"/>
+
+                    <!-- Yeni eşleştirme ekleme -->
+                    <Border Grid.Row="2"
+                            Style="{StaticResource CardSubtleStyle}"
+                            Margin="0,0,0,16">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Öğrenim Çıktısı"
+                                       Style="{StaticResource LabelStyle}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Katkı"
+                                       Style="{StaticResource LabelStyle}"/>
+
+                            <ComboBox Grid.Row="1" Grid.Column="0"
+                                      ItemsSource="{Binding AvailableOutcomes}"
+                                      SelectedItem="{Binding OutcomeToAdd}"
+                                      DisplayMemberPath="Name"/>
+
+                            <ComboBox Grid.Row="1" Grid.Column="2"
+                                      SelectedItem="{Binding NewContributionLevel}"
+                                      Width="80">
+                                <ComboBox.Items>
+                                    <sys:Int32>1</sys:Int32>
+                                    <sys:Int32>2</sys:Int32>
+                                    <sys:Int32>3</sys:Int32>
+                                    <sys:Int32>4</sys:Int32>
+                                    <sys:Int32>5</sys:Int32>
+                                </ComboBox.Items>
+                            </ComboBox>
+
+                            <Button Grid.Row="1" Grid.Column="4"
+                                    Content="Bağla"
+                                    Command="{Binding LinkOutcomeCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Eşleşmiş ÖÇ Listesi -->
+                    <Border Grid.Row="3"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="{DynamicResource RadiusLg}">
+                        <DataGrid ItemsSource="{Binding MappedOutcomes}"
+                                  MaxHeight="320">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Kod" Binding="{Binding Code}" Width="80" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Öğrenim Çıktısı" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Ders" Binding="{Binding CourseName}" Width="180" IsReadOnly="True"/>
+                                <DataGridTemplateColumn Header="Katkı" Width="90">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox SelectedItem="{Binding ContributionLevel, UpdateSourceTrigger=PropertyChanged}"
+                                                      Width="62"
+                                                      MinHeight="28"
+                                                      HorizontalAlignment="Left">
+                                                <ComboBox.Items>
+                                                    <sys:Int32>1</sys:Int32>
+                                                    <sys:Int32>2</sys:Int32>
+                                                    <sys:Int32>3</sys:Int32>
+                                                    <sys:Int32>4</sys:Int32>
+                                                    <sys:Int32>5</sys:Int32>
+                                                </ComboBox.Items>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="İşlem" Width="190">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Left">
+                                                <Button Content="Kaydet"
+                                                        Command="{Binding DataContext.UpdateContributionCommand,
+                                                                  RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource PrimaryButtonStyle}"
+                                                        Width="74"
+                                                        Padding="0,5"
+                                                        FontSize="11"
+                                                        Margin="0,0,8,0"
+                                                        ToolTip="Katkı seviyesini kaydet"/>
+                                                <Button Content="Kaldır"
+                                                        Command="{Binding DataContext.UnlinkOutcomeCommand,
+                                                                  RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource DangerButtonStyle}"
+                                                        Width="74"
+                                                        Padding="0,5"
+                                                        FontSize="11"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <!-- Matrix Görünümü -->
+                    <StackPanel Grid.Row="4" Margin="0,18,0,8">
+                        <TextBlock Text="Dersin Program Çıktılarına Katkısı"
+                                   Style="{StaticResource SubheadingStyle}"
+                                   Margin="0"/>
+                        <TextBlock Text="Satırlar öğrenim çıktıları, sütunlar program çıktıları. Hücrelerden katkı seviyesini 1–5 arasında seçebilirsiniz."
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   FontSize="12"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <Border Grid.Row="5"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="{DynamicResource RadiusLg}">
+                        <ScrollViewer MaxHeight="360"
+                                      HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="124"
+                                            Height="38"
+                                            Background="{DynamicResource SurfaceSunkenBrush}"
+                                            BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                            BorderThickness="0,0,1,1">
+                                        <TextBlock Text="ÖÇ"
+                                                   FontWeight="SemiBold"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ItemsControl ItemsSource="{Binding MatrixColumns}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Width="76"
+                                                        Height="38"
+                                                        Background="{DynamicResource SurfaceSunkenBrush}"
+                                                        BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                                        BorderThickness="0,0,1,1"
+                                                        ToolTip="{Binding ToolTip}">
+                                                    <TextBlock Text="{Binding Label}"
+                                                               FontWeight="SemiBold"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+
+                                <ItemsControl ItemsSource="{Binding MatrixRows}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border Width="124"
+                                                        Height="42"
+                                                        BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                                        BorderThickness="0,0,1,1"
+                                                        ToolTip="{Binding ToolTip}">
+                                                    <TextBlock Text="{Binding RowLabel}"
+                                                               FontWeight="SemiBold"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"/>
+                                                </Border>
+
+                                                <ItemsControl ItemsSource="{Binding Cells}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border Width="76"
+                                                                    Height="42"
+                                                                    BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                                                    BorderThickness="0,0,1,1"
+                                                                    ToolTip="{Binding ToolTip}">
+                                                                <ComboBox SelectedItem="{Binding ContributionLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                          SelectionChanged="MatrixContribution_SelectionChanged"
+                                                                          Width="58"
+                                                                          MinHeight="30"
+                                                                          Padding="8,4"
+                                                                          HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"
+                                                                          HorizontalContentAlignment="Center"
+                                                                          ToolTip="{Binding ToolTip}">
+                                                                    <ComboBox.Items>
+                                                                        <sys:Int32>1</sys:Int32>
+                                                                        <sys:Int32>2</sys:Int32>
+                                                                        <sys:Int32>3</sys:Int32>
+                                                                        <sys:Int32>4</sys:Int32>
+                                                                        <sys:Int32>5</sys:Int32>
+                                                                    </ComboBox.Items>
+                                                                </ComboBox>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </Border>
+        </StackPanel>
+        </ScrollViewer>
+
+        <views:LoadingOverlay Grid.Row="0" Grid.RowSpan="3"
+                              Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,193 @@
+﻿<UserControl x:Class="EduAnalytics.UI.Views.OpticalReadingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EduAnalytics.UI.ViewModels"
+             xmlns:ctl="clr-namespace:EduAnalytics.UI.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
+             d:DataContext="{d:DesignInstance Type=vm:OpticalReadingViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+
+    <Grid Style="{StaticResource PageRootGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ctl:PageHeader Grid.Row="0"
+                        Icon="Scanner"
+                        Title="Optik Okuma"
+                        Subtitle="Sınav için optik form üretin, taranmış formları yükleyin. Ad-soyad ve öğrenci numarası PaddleOCR ile, cevap baloncukları optik işaret tanıma (OMR) ile okunur. Düşük güvenli okumalar tabloda düzeltilebilir.">
+            <ctl:PageHeader.Actions>
+                <StackPanel Orientation="Horizontal">
+                    <Button Command="{Binding GenerateFormCommand}"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            IsEnabled="{Binding HasExamLoaded}"
+                            Margin="0,0,8,0"
+                            ToolTip="Seçili sınav için yazdırılabilir optik cevap formu (PDF) üret">
+                        <StackPanel Orientation="Horizontal">
+                            <mi:MaterialIcon Kind="FilePdfBox" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Optik Form Üret"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding ImportScansCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            IsEnabled="{Binding HasExamLoaded}"
+                            ToolTip="Taranmış formları (PDF, JPEG, PNG) yükle ve oku">
+                        <StackPanel Orientation="Horizontal">
+                            <mi:MaterialIcon Kind="Upload" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Tarama Yükle"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </ctl:PageHeader.Actions>
+        </ctl:PageHeader>
+
+        <!-- Mesajlar -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,12">
+            <Border Style="{StaticResource AlertErrorStyle}"
+                    Margin="0,0,0,6"
+                    Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerEmphasisBrush}" TextWrapping="Wrap"/>
+            </Border>
+            <Border Style="{StaticResource AlertSuccessStyle}"
+                    Visibility="{Binding SuccessMessage, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding SuccessMessage}" Foreground="{DynamicResource SuccessEmphasisBrush}" TextWrapping="Wrap"/>
+            </Border>
+        </StackPanel>
+
+        <!-- Sınav seçimi -->
+        <Border Grid.Row="2" Style="{StaticResource BentoCardStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="18"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Sınav:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox Grid.Column="1"
+                          ItemsSource="{Binding Exams}"
+                          SelectedItem="{Binding SelectedExam}"
+                          DisplayMemberPath="Title"
+                          VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding ExamInfo}" Opacity="0.75" VerticalAlignment="Center"/>
+                    <ProgressBar Width="120" Height="4" Margin="16,0,8,0"
+                                 IsIndeterminate="True"
+                                 VerticalAlignment="Center"
+                                 Visibility="{Binding IsProcessing, Converter={StaticResource BoolToVisibility}}"/>
+                    <TextBlock Text="{Binding ProcessingStatus}" Opacity="0.75" VerticalAlignment="Center"
+                               Visibility="{Binding IsProcessing, Converter={StaticResource BoolToVisibility}}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- İnceleme ızgarası -->
+        <Border Grid.Row="3" Style="{StaticResource BentoCardStyle}" Margin="0,12,0,0">
+            <Grid>
+                <DataGrid ItemsSource="{Binding Sheets}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          HeadersVisibility="Column"
+                          SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Kaynak" Binding="{Binding SourceLabel}" IsReadOnly="True" Width="150"/>
+                        <DataGridTextColumn Header="Okunan No" Binding="{Binding OcrNumber}" IsReadOnly="True" Width="95"/>
+                        <DataGridTextColumn Header="Okunan Ad" Binding="{Binding OcrName}" IsReadOnly="True" Width="130"/>
+                        <DataGridTextColumn Header="Eşleşme" Binding="{Binding MatchInfo}" IsReadOnly="True" Width="170"/>
+
+                        <DataGridTemplateColumn Header="Öğrenci" Width="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding DataContext.MatchableStudents, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              SelectedItem="{Binding SelectedStudent, UpdateSourceTrigger=PropertyChanged}"
+                                              DisplayMemberPath="Display"
+                                              IsEnabled="{Binding MarkersFound}"
+                                              Margin="2"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Kitapçık" Width="85">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding DataContext.AvailableBookletCodes, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              SelectedItem="{Binding BookletCode, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding MarkersFound}"
+                                              Margin="2"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Cevaplar (A–E, '-' boş, '?' belirsiz)" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding AnswersText, UpdateSourceTrigger=LostFocus}"
+                                             FontFamily="Consolas"
+                                             IsEnabled="{Binding MarkersFound}"
+                                             VerticalAlignment="Center"
+                                             Margin="2"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="Güven" Binding="{Binding ConfidenceDisplay}" IsReadOnly="True" Width="60"/>
+                        <DataGridTextColumn Header="Uyarılar" Binding="{Binding WarningsText}" IsReadOnly="True" Width="200">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="ToolTip" Value="{Binding WarningsText}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Width="45">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Command="{Binding DataContext.RemoveSheetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource SecondaryButtonStyle}"
+                                            Padding="4"
+                                            ToolTip="Bu sayfayı listeden çıkar">
+                                        <mi:MaterialIcon Kind="Close" Width="14" Height="14"/>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- DataGrid'den SONRA tanımlı: boş-durum mesajı üst katmanda kalır. -->
+                <TextBlock Text="Henüz tarama yüklenmedi. Bir sınav seçin, optik formu üretip yazdırın; sınav sonrası taramaları buraya yükleyin."
+                           Opacity="0.55" TextWrapping="Wrap"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Visibility="{Binding Sheets.Count, Converter={StaticResource CollectionEmptyToVisibility}}"/>
+            </Grid>
+        </Border>
+
+        <!-- Kaydet -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <TextBlock VerticalAlignment="Center" Opacity="0.7" Margin="0,0,12,0">
+                <Run Text="{Binding Sheets.Count, Mode=OneWay}"/>
+                <Run Text="sayfa yüklendi"/>
+            </TextBlock>
+            <Button Command="{Binding SaveAllCommand}"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    IsEnabled="{Binding HasExamLoaded}"
+                    ToolTip="Eşleşmiş tüm sayfaların cevaplarını veritabanına kaydet">
+                <StackPanel Orientation="Horizontal">
+                    <mi:MaterialIcon Kind="ContentSaveOutline" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Cevapları Kaydet"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,255 @@
+<UserControl x:Class="EduAnalytics.UI.Views.ExamManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EduAnalytics.UI.ViewModels"
+             xmlns:views="clr-namespace:EduAnalytics.UI.Views"
+             xmlns:ctl="clr-namespace:EduAnalytics.UI.Controls"
+             xmlns:enums="clr-namespace:EduAnalytics.Core.Enums;assembly=EduAnalytics.Core"
+             xmlns:mi="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
+             d:DataContext="{d:DesignInstance Type=vm:ExamManagementViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+
+    <Grid Style="{StaticResource PageRootGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ctl:PageHeader Grid.Row="0"
+                        Icon="FileDocumentMultipleOutline"
+                        Title="Sınav Yönetimi"
+                        Subtitle="Oluşturulan sınavları görüntüleyin, analiz ekranına geçin veya temel bilgileri düzenleyin."/>
+
+        <StackPanel Grid.Row="1">
+            <Border Style="{StaticResource AlertErrorStyle}"
+                    Margin="0,0,0,8"
+                    Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerEmphasisBrush}" TextWrapping="Wrap"/>
+            </Border>
+            <Border Style="{StaticResource AlertSuccessStyle}"
+                    Margin="0,0,0,8"
+                    Visibility="{Binding SuccessMessage, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding SuccessMessage}" Foreground="{DynamicResource SuccessEmphasisBrush}" TextWrapping="Wrap"/>
+            </Border>
+        </StackPanel>
+
+        <ScrollViewer Style="{StaticResource PageScrollViewerStyle}" Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Exams}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource BentoCardStyle}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Margin="0,0,18,0">
+                                    <TextBlock Text="{Binding Title}"
+                                               FontSize="17" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                        <Border Background="{DynamicResource PrimaryLightBrush}" CornerRadius="{DynamicResource RadiusLg}" Padding="7,3" Margin="0,0,8,0">
+                                            <TextBlock Text="{Binding ExamType}" Foreground="{DynamicResource PrimaryBrush}"
+                                                       FontSize="11" FontWeight="SemiBold"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding CourseName}"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="  /  " Foreground="{DynamicResource SubtleBrush}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding ExamDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="  /  " Foreground="{DynamicResource SubtleBrush}" VerticalAlignment="Center"/>
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}">
+                                            <Run Text="{Binding DurationMinutes}"/>
+                                            <Run Text=" dk"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Width="98" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding TotalQuestions}"
+                                               FontSize="20" FontWeight="Bold"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Soru" Style="{StaticResource MetricLabelStyle}"
+                                               HorizontalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Width="98" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding TotalAnswers}"
+                                               FontSize="20" FontWeight="Bold"
+                                               HorizontalAlignment="Center"
+                                               Foreground="{DynamicResource PrimaryBrush}"/>
+                                    <TextBlock Text="Cevap" Style="{StaticResource MetricLabelStyle}"
+                                               HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Content="Analiz"
+                                            Command="{Binding DataContext.OpenAnalysisCommand,
+                                                      RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource SecondaryButtonStyle}"
+                                            Padding="12,7"
+                                            Margin="0,0,6,0"/>
+                                    <Button Content="Düzenle"
+                                            Command="{Binding DataContext.EditCommand,
+                                                      RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource PrimaryButtonStyle}"
+                                            Padding="12,7"
+                                            Margin="0,0,6,0"/>
+                                    <Button Content="Sil"
+                                            Command="{Binding DataContext.DeleteCommand,
+                                                      RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource DangerButtonStyle}"
+                                            Padding="12,7"/>
+                                </StackPanel>
+
+                                <Border Grid.Row="1" Grid.ColumnSpan="4"
+                                        Background="{DynamicResource PageBgBrush}"
+                                        BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="{DynamicResource RadiusLg}"
+                                        Padding="12"
+                                        Margin="0,16,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="Sınav soruları"
+                                                   Style="{StaticResource CaptionStyle}"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,8"/>
+                                        <ItemsControl ItemsSource="{Binding Questions}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="0,0,0,6">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="46"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="64"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <TextBlock Grid.Column="0"
+                                                                   Text="{Binding QuestionNumber, StringFormat={}S{0}}"
+                                                                   FontSize="11"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource PrimaryBrush}"/>
+                                                        <Border Grid.Column="1"
+                                                                Background="{DynamicResource PrimaryLightBrush}"
+                                                                CornerRadius="{DynamicResource RadiusLg}"
+                                                                Padding="5,2"
+                                                                Margin="0,0,8,0">
+                                                            <TextBlock Text="{Binding Type}"
+                                                                       FontSize="10"
+                                                                       Foreground="{DynamicResource PrimaryBrush}"/>
+                                                        </Border>
+                                                        <TextBlock Grid.Column="2"
+                                                                   Text="{Binding QuestionText}"
+                                                                   TextWrapping="Wrap"
+                                                                   FontSize="12"
+                                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                                        <TextBlock Grid.Column="3"
+                                                                   HorizontalAlignment="Right"
+                                                                   FontSize="11"
+                                                                   Foreground="{DynamicResource TextSecondaryBrush}">
+                                                            <Run Text="{Binding MaxPoints}"/>
+                                                            <Run Text=" p"/>
+                                                        </TextBlock>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2"
+                    Style="{StaticResource EmptyStateStyle}"
+                    Visibility="{Binding Exams.Count, Converter={StaticResource CollectionEmptyToVisibility}}">
+            <mi:MaterialIcon Kind="FileDocumentOutline" Width="48" Height="48"
+                             Foreground="{DynamicResource SubtleBrush}"
+                             HorizontalAlignment="Center"/>
+            <TextBlock Text="Henüz sınav yok" Style="{StaticResource EmptyStateTitleStyle}"/>
+            <TextBlock Text="Sınav Oluştur ekranından yeni sınav oluşturabilirsiniz."
+                       Style="{StaticResource EmptyStateDescriptionStyle}"/>
+        </StackPanel>
+
+        <views:LoadingOverlay Grid.RowSpan="3"
+                              Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}"/>
+
+        <Border Grid.RowSpan="3"
+                Background="{DynamicResource OverlayBrush}"
+                Visibility="{Binding IsEditDialogOpen, Converter={StaticResource BoolToVisibility}}">
+            <Border Background="{DynamicResource CardBgBrush}"
+                    CornerRadius="{DynamicResource RadiusLg}"
+                    Padding="24"
+                    Width="540"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="Sınavı Düzenle"
+                               Style="{StaticResource HeadingStyle}"
+                               Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Sınav Başlığı" Style="{StaticResource LabelStyle}"/>
+                    <TextBox Text="{Binding EditTitle, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,12"/>
+
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Tarih" Style="{StaticResource LabelStyle}"/>
+                            <DatePicker SelectedDate="{Binding EditExamDate}" Padding="8,4"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Süre (dk)" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Text="{Binding EditDurationMinutes, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="Sınav Tipi" Style="{StaticResource LabelStyle}"/>
+                    <ComboBox SelectedItem="{Binding EditExamType}" Margin="0,0,0,16">
+                        <ComboBox.Items>
+                            <x:Static Member="enums:ExamType.Quiz"/>
+                            <x:Static Member="enums:ExamType.Midterm"/>
+                            <x:Static Member="enums:ExamType.Final"/>
+                            <x:Static Member="enums:ExamType.MakeUp"/>
+                        </ComboBox.Items>
+                    </ComboBox>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="İptal"
+                                Command="{Binding CancelEditCommand}"
+                                Style="{StaticResource SecondaryButtonStyle}"
+                                Margin="0,0,8,0"/>
+                        <Button Content="Kaydet"
+                                Command="{Binding SaveEditCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,292 @@
+<Window x:Class="EduAnalytics.UI.Views.AIAssistantSettingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mi="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
+        Title="AI Asistan Ayarları"
+        Icon="../Assets/AppIcon.ico"
+        Width="900" Height="700"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="{DynamicResource PageBgBrush}">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="48"
+                      ResizeBorderThickness="0"
+                      GlassFrameThickness="0"
+                      UseAeroCaptionButtons="False"
+                      CornerRadius="8"/>
+    </WindowChrome.WindowChrome>
+
+    <Grid Background="{DynamicResource PageBgBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Background="{DynamicResource TopBarBgBrush}"
+                BorderBrush="{DynamicResource BorderSubtleBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid Margin="18,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <mi:MaterialIcon Kind="CogOutline"
+                                     Width="16"
+                                     Height="16"
+                                     Foreground="{DynamicResource PrimaryBrush}"
+                                     VerticalAlignment="Center"/>
+                    <TextBlock Text="AI Asistan Ayarları"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               Margin="8,0,0,0"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <Button Grid.Column="1"
+                        Click="Close_Click"
+                        Style="{StaticResource TitleBarButtonStyle}"
+                        Width="42"
+                        Height="48"
+                        ToolTip="Kapat"
+                        WindowChrome.IsHitTestVisibleInChrome="True">
+                    <mi:MaterialIcon Kind="Close" Width="15" Height="15"/>
+                </Button>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Padding="28,24,28,18">
+            <StackPanel Orientation="Horizontal">
+                <Border Width="44" Height="44"
+                        CornerRadius="{DynamicResource RadiusLg}"
+                        Background="{DynamicResource PrimaryLightBrush}"
+                        Margin="0,0,14,0">
+                    <mi:MaterialIcon Kind="Cog"
+                                     Width="22"
+                                     Height="22"
+                                     Foreground="{DynamicResource PrimaryBrush}"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="AI Asistan Ayarları"
+                               Style="{StaticResource PageTitleStyle}"
+                               FontSize="24"/>
+                    <TextBlock Text="Provider, model ve API anahtarı"
+                               FontSize="13"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="2" Padding="28,0,28,18" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border Style="{StaticResource AlertInfoStyle}" Margin="0,0,0,16">
+                    <TextBlock Style="{StaticResource AlertInfoTextStyle}"
+                               TextWrapping="Wrap"
+                               Text="API anahtarı yerel kullanıcı profilinde şifrelenmiş olarak saklanır. Asistan yalnızca aktif ekranın özet istatistiklerini gönderir; öğrenci adı/numarası gibi PII gönderilmez."/>
+                </Border>
+
+                <Border Style="{StaticResource BentoCardStyle}" Margin="0,0,0,18">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Style="{StaticResource FormFieldStyle}">
+                                <TextBlock Text="Provider" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox x:Name="ProviderCombo"
+                                          MinWidth="220"
+                                          MinHeight="44"
+                                          HorizontalAlignment="Stretch"
+                                          SelectionChanged="ProviderCombo_SelectionChanged"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Style="{StaticResource FormFieldStyle}">
+                                <TextBlock Text="Model" Style="{StaticResource LabelStyle}"/>
+                                <ComboBox x:Name="ModelCombo"
+                                          MinHeight="44"
+                                          HorizontalAlignment="Stretch"
+                                          MaxDropDownHeight="300"
+                                          TextSearch.TextPath="DisplayName">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Margin="0,4" MinWidth="560">
+                                                <TextBlock Text="{Binding DisplayName}"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                                <TextBlock Text="{Binding Description}"
+                                                           FontSize="11"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                                           TextWrapping="Wrap"
+                                                           Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+
+                        <StackPanel Style="{StaticResource FormFieldStyle}">
+                            <TextBlock Text="API anahtarı" Style="{StaticResource LabelStyle}"/>
+                            <PasswordBox x:Name="ApiKeyBox"
+                                          MinHeight="44"
+                                          HorizontalAlignment="Stretch"
+                                          Padding="12,10"/>
+                            <TextBlock x:Name="KeyStatusText"
+                                       Style="{StaticResource FormHintStyle}"/>
+                        </StackPanel>
+
+                        <Border x:Name="ConnectionStatusBorder"
+                                Style="{StaticResource AlertInfoStyle}"
+                                Visibility="Collapsed"
+                                Margin="0,0,0,16">
+                            <TextBlock x:Name="ConnectionStatusText"
+                                       Style="{StaticResource AlertInfoTextStyle}"
+                                       TextWrapping="Wrap"/>
+                        </Border>
+
+                        <Button Content="Bu provider'ın anahtarını temizle"
+                                Style="{StaticResource SecondaryButtonStyle}"
+                                HorizontalAlignment="Left"
+                                Click="ClearKey_Click"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="{DynamicResource CardBgBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="{DynamicResource RadiusLg}"
+                        Padding="16"
+                        Margin="0,0,0,0">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Kayıtlı bağlantılar"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Daha önce kaydedilen provider, model ve API anahtarları"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+                            <Button Grid.Column="1"
+                                    Content="Yenile"
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Padding="12,7"
+                                    Click="RefreshSavedConnections_Click"/>
+                        </Grid>
+
+                        <TextBlock x:Name="SavedConnectionsEmptyText"
+                                   Text="Henüz kayıtlı bağlantı yok."
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   FontSize="12"
+                                   Margin="0,14,0,0"
+                                   Visibility="Collapsed"/>
+
+                        <ItemsControl x:Name="SavedConnectionsList" Margin="0,14,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource PageBgBrush}"
+                                            BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="{DynamicResource RadiusMd}"
+                                            Padding="12"
+                                            Margin="0,0,0,8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding ProviderLabel}"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                                               VerticalAlignment="Center"/>
+                                                    <Border Background="{DynamicResource PrimaryLightBrush}"
+                                                            CornerRadius="{DynamicResource RadiusLg}"
+                                                            Padding="7,2"
+                                                            Margin="8,0,0,0"
+                                                            Visibility="{Binding IsActive, Converter={StaticResource BoolToVisibility}}">
+                                                        <TextBlock Text="Aktif"
+                                                                   FontSize="11"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource PrimaryBrush}"/>
+                                                    </Border>
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding ModelDisplayName}"
+                                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                                           TextWrapping="Wrap"
+                                                           Margin="0,5,0,0"/>
+                                                <TextBlock Text="{Binding ApiKeyMasked}"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                                           FontSize="12"
+                                                           TextWrapping="Wrap"
+                                                           Margin="0,3,0,0"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="1"
+                                                        Orientation="Horizontal"
+                                                        VerticalAlignment="Center"
+                                                        Margin="14,0,0,0">
+                                                <Button Content="Düzenle"
+                                                        Style="{StaticResource SecondaryButtonStyle}"
+                                                        Padding="12,7"
+                                                        Margin="0,0,8,0"
+                                                        Tag="{Binding}"
+                                                        Click="EditSavedConnection_Click"/>
+                                                <Button Content="Sil"
+                                                        Style="{StaticResource DangerButtonStyle}"
+                                                        Padding="12,7"
+                                                        Tag="{Binding}"
+                                                        Click="DeleteSavedConnection_Click"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="3"
+                BorderBrush="{DynamicResource BorderSubtleBrush}"
+                BorderThickness="0,1,0,0"
+                Background="{DynamicResource TopBarBgBrush}"
+                Padding="28,12">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="TestButton"
+                        Content="Bağlantıyı Test Et"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Margin="0,0,8,0"
+                        Click="TestConnection_Click"/>
+                <Button Content="Vazgeç"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Margin="0,0,8,0"
+                        Click="Cancel_Click"/>
+                <Button Content="Kaydet"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Click="Save_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

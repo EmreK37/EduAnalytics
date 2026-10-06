@@ -1,0 +1,145 @@
+﻿<Window x:Class="EduAnalytics.UI.Views.RubricGradeDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:EduAnalytics.UI.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:RubricGradeDialogViewModel}"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="Detaylı Puanlama"
+        Height="640" Width="800"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource PageBgBrush}">
+
+    <Grid Style="{StaticResource PageRootGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="22,20,22,12">
+            <TextBlock Text="Detaylı Puanlama (Rubric)" Style="{StaticResource HeadingStyle}"/>
+            <TextBlock Text="{Binding StudentTitle}"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       FontSize="13"/>
+            <TextBlock Text="{Binding QuestionTitle}"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       FontSize="12"
+                       TextWrapping="Wrap"
+                       Margin="0,2,0,0"/>
+        </StackPanel>
+
+        <Border Grid.Row="1"
+                Style="{StaticResource AlertInfoStyle}"
+                Margin="22,0,22,12"
+                Padding="16,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="TOPLAM PUAN" Style="{StaticResource MetricLabelStyle}"/>
+                    <TextBlock Style="{StaticResource MetricValueStyle}"
+                               Foreground="{DynamicResource PrimaryDarkBrush}"
+                               Margin="0,4,0,0">
+                        <Run Text="{Binding TotalScore, Mode=OneWay}"/>
+                        <Run Text=" / "/>
+                        <Run Text="{Binding MaxTotalScore, Mode=OneWay}"/>
+                    </TextBlock>
+                </StackPanel>
+                <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Margin="20,0,0,0"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           TextWrapping="Wrap">
+                    Her kritere ayrı puan girin. Toplam otomatik hesaplanır ve öğrencinin sınav puanına yansır.
+                </TextBlock>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Style="{StaticResource PageScrollViewerStyle}" Grid.Row="2" VerticalScrollBarVisibility="Auto" Padding="22,0,22,0">
+            <ItemsControl ItemsSource="{Binding Rows}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource BentoCardStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="140"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0"
+                                           Text="{Binding Title}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center"/>
+
+                                <StackPanel Grid.Row="0" Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center">
+                                    <TextBox Text="{Binding Score, UpdateSourceTrigger=PropertyChanged, StringFormat=N1}"
+                                             Width="72"
+                                             FontWeight="SemiBold"
+                                             FontSize="14"
+                                             HorizontalContentAlignment="Center"/>
+                                    <TextBlock VerticalAlignment="Center"
+                                               Margin="8,0,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               FontSize="13">
+                                        <Run Text="/ "/>
+                                        <Run Text="{Binding MaxPoints}" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <TextBox Grid.Row="1" Grid.ColumnSpan="2"
+                                         Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                         AcceptsReturn="True"
+                                         TextWrapping="Wrap"
+                                         MinHeight="48"
+                                         Margin="0,10,0,0"
+                                         Background="{DynamicResource PageBgBrush}"
+                                         FontSize="12"
+                                         VerticalContentAlignment="Top"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="3" Margin="22,0,22,0">
+            <Border Style="{StaticResource AlertErrorStyle}"
+                    Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerEmphasisBrush}" TextWrapping="Wrap"/>
+            </Border>
+            <Border Style="{StaticResource AlertSuccessStyle}"
+                    Visibility="{Binding SuccessMessage, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding SuccessMessage}" Foreground="{DynamicResource SuccessEmphasisBrush}" TextWrapping="Wrap"/>
+            </Border>
+        </StackPanel>
+
+        <Border Grid.Row="4"
+                Style="{StaticResource DialogFooterStyle}"
+                Margin="0,12,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Kapat"
+                        Click="OnCloseClick"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Margin="0,0,8,0"/>
+                <Button Content="Kaydet"
+                        Command="{Binding SaveCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        IsDefault="True"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

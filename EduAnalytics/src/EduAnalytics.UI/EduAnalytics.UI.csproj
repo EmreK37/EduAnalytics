@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>EduAnalytics.UI</RootNamespace>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+    <StartupObject>EduAnalytics.UI.App</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="Material.Icons.WPF" Version="2.1.12" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
+    <PackageReference Include="QuestPDF" Version="2026.2.4" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="9.0.0" />
+    <PackageReference Include="WPF-UI" Version="3.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EduAnalytics.Core\EduAnalytics.Core.csproj" />
+    <ProjectReference Include="..\EduAnalytics.DataAccess\EduAnalytics.DataAccess.csproj" />
+    <ProjectReference Include="..\EduAnalytics.Business\EduAnalytics.Business.csproj" />
+    <ProjectReference Include="..\EduAnalytics.Ocr\EduAnalytics.Ocr.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\AppIcon.ico" />
+    <Resource Include="Assets\AppIcon.ico" />
+  </ItemGroup>
+
+</Project>

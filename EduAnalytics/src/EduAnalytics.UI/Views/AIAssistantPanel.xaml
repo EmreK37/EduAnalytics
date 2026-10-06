@@ -1,0 +1,375 @@
+﻿<UserControl x:Class="EduAnalytics.UI.Views.AIAssistantPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EduAnalytics.UI.ViewModels"
+             xmlns:mi="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
+             d:DataContext="{d:DesignInstance Type=vm:AIAssistantViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <UserControl.Resources>
+        <Style x:Key="UserBubbleStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="CornerRadius" Value="14,14,2,14"/>
+            <Setter Property="Padding" Value="12,9"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="MaxWidth" Value="300"/>
+            <Setter Property="Margin" Value="32,4,0,4"/>
+        </Style>
+        <Style x:Key="AssistantBubbleStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource CardBgBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="14,14,14,2"/>
+            <Setter Property="Padding" Value="12,9"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="MaxWidth" Value="320"/>
+            <Setter Property="Margin" Value="0,4,32,4"/>
+        </Style>
+
+        <Style x:Key="SuggestionButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="{DynamicResource PageBgBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderSubtleBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,9"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="{DynamicResource PrimaryLightBrush}"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.88"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Background="{DynamicResource CardBgBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1,0,0,0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- HEADER -->
+            <Border Grid.Row="0"
+                    Padding="16,14"
+                    BorderBrush="{DynamicResource BorderSubtleBrush}"
+                    BorderThickness="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0"
+                            Width="32" Height="32"
+                            CornerRadius="{DynamicResource RadiusMd}"
+                            Background="{DynamicResource PrimaryLightBrush}"
+                            Margin="0,0,10,0">
+                        <TextBlock Text="AI"
+                                   Foreground="{DynamicResource PrimaryBrush}"
+                                   FontWeight="Bold"
+                                   FontSize="12"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="AI Asistan"
+                                   FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <TextBlock Text="{Binding ActiveProviderLabel}"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   Margin="0,2,0,0"/>
+                        <TextBlock Text="{Binding ActiveContextLabel}"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource PrimaryBrush}"
+                                   Margin="0,2,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <Button Click="OpenSettings_Click"
+                                Style="{StaticResource IconButtonStyle}"
+                                ToolTip="Ayarlar (Provider / Model / API Key)">
+                            <mi:MaterialIcon Kind="Cog" Width="16" Height="16"/>
+                        </Button>
+                        <Button Command="{Binding ClearConversationCommand}"
+                                Style="{StaticResource IconButtonStyle}"
+                                ToolTip="Konuşmayı Temizle">
+                            <mi:MaterialIcon Kind="DeleteOutline" Width="16" Height="16"/>
+                        </Button>
+                        <Button Command="{Binding CopyLastAnswerCommand}"
+                                Style="{StaticResource IconButtonStyle}"
+                                ToolTip="Son yanıtı kopyala">
+                            <mi:MaterialIcon Kind="ContentCopy" Width="16" Height="16"/>
+                        </Button>
+                        <Button Click="ClosePanel_Click"
+                                Style="{StaticResource IconButtonStyle}"
+                                ToolTip="Paneli Kapat">
+                            <mi:MaterialIcon Kind="Close" Width="16" Height="16"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- UYARILAR -->
+            <StackPanel Grid.Row="1" Margin="12,12,12,0">
+                <Border Style="{StaticResource AlertWarningStyle}"
+                        Visibility="{Binding HasConfiguredKey, Converter={StaticResource BoolToVisibility}, ConverterParameter=invert}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <mi:MaterialIcon Kind="KeyAlertOutline"
+                                         Width="18"
+                                         Height="18"
+                                         Foreground="{DynamicResource WarningBrush}"
+                                         Margin="0,1,10,0"
+                                         VerticalAlignment="Top"/>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="API anahtarı gerekli"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource WarningSubtleTextBrush}"/>
+                            <TextBlock Style="{StaticResource AlertWarningTextStyle}"
+                                       TextWrapping="Wrap"
+                                       Margin="0,3,0,0"
+                                       Text="Yanıt almak için sağ üstteki ayarlardan provider ve API anahtarınızı tanımlayın."/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource AlertErrorStyle}"
+                        Margin="0,8,0,0"
+                        Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVisibility}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <mi:MaterialIcon Kind="AlertCircleOutline"
+                                         Width="18"
+                                         Height="18"
+                                         Foreground="{DynamicResource DangerBrush}"
+                                         Margin="0,1,10,0"
+                                         VerticalAlignment="Top"/>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="İşlem tamamlanamadı"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource DangerEmphasisBrush}"/>
+                            <TextBlock Text="{Binding ErrorMessage}"
+                                       Style="{StaticResource AlertErrorTextStyle}"
+                                       TextWrapping="Wrap"
+                                       Margin="0,3,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <!-- KONUŞMA -->
+            <ScrollViewer Grid.Row="2" x:Name="ChatScroll"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="12,12,12,4">
+                <Grid>
+                    <!-- BOŞ DURUM -->
+                    <StackPanel Visibility="{Binding Messages.Count, Converter={StaticResource CollectionEmptyToVisibility}, ConverterParameter=empty}"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"
+                              Margin="0,40,0,0">
+                        <Border Width="56" Height="56"
+                                CornerRadius="{DynamicResource Radius2Xl}"
+                                Background="{DynamicResource SubtleHoverBrush}"
+                                HorizontalAlignment="Center"
+                                Margin="0,0,0,14">
+                            <mi:MaterialIcon Kind="MessageOutline" Width="26" Height="26"
+                                             Foreground="{DynamicResource SubtleBrush}"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="AI EDU'ya sor"
+                                   FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock TextWrapping="Wrap" TextAlignment="Center"
+                                   FontSize="12"
+                                   MaxWidth="260"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   Margin="0,6,0,0"
+                                   Text="Uygulamanın kullanımından sınav analizine kadar her konuda yardım alabilirsin."/>
+                    </StackPanel>
+
+                    <!-- KONUŞMA LİSTESİ -->
+                    <ItemsControl ItemsSource="{Binding Messages}"
+                                  Visibility="{Binding Messages.Count, Converter={StaticResource BoolToVisibility}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border Style="{StaticResource UserBubbleStyle}"
+                                            Visibility="{Binding IsUser, Converter={StaticResource BoolToVisibility}}">
+                                        <TextBlock Text="{Binding Content}"
+                                                   Foreground="White"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="13"/>
+                                    </Border>
+                                    <Border Style="{StaticResource AssistantBubbleStyle}"
+                                            Visibility="{Binding IsAssistant, Converter={StaticResource BoolToVisibility}}">
+                                        <TextBlock Text="{Binding Content}"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="13"
+                                                   LineHeight="19"/>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </ScrollViewer>
+
+            <!-- ÖNERİLER -->
+            <Border Grid.Row="3"
+                    Padding="12,12,12,10"
+                    BorderBrush="{DynamicResource BorderSubtleBrush}"
+                    BorderThickness="0,1,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding SuggestionsTitle}"
+                               FontSize="11"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               Margin="2,0,0,6"/>
+                    <ItemsControl ItemsSource="{Binding SuggestedPrompts}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource SuggestionButtonStyle}"
+                                        Click="SuggestionButton_Click"
+                                        Tag="{Binding}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Width="24"
+                                                Height="24"
+                                                CornerRadius="{DynamicResource RadiusMd}"
+                                                Background="{DynamicResource PrimaryLightBrush}"
+                                                Margin="0,0,9,0"
+                                                VerticalAlignment="Top">
+                                            <mi:MaterialIcon Kind="MessageOutline"
+                                                             Width="14"
+                                                             Height="14"
+                                                             Foreground="{DynamicResource PrimaryBrush}"
+                                                             HorizontalAlignment="Center"
+                                                             VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding}"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   TextWrapping="Wrap"
+                                                   LineHeight="17"/>
+                                    </Grid>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- STREAMING DURUMU -->
+            <Border Grid.Row="4"
+                    Padding="12,4,12,0"
+                    Visibility="{Binding IsStreaming, Converter={StaticResource BoolToVisibility}}">
+                <StackPanel Orientation="Horizontal">
+                    <Border Width="6" Height="6"
+                            CornerRadius="2"
+                            Background="{DynamicResource PrimaryBrush}"
+                            VerticalAlignment="Center"/>
+                    <TextBlock Text="Asistan yazıyor..."
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               FontSize="11"
+                               Margin="6,0,0,0"
+                               VerticalAlignment="Center"/>
+                    <Button Content="Durdur"
+                            Command="{Binding CancelCommand}"
+                            Style="{StaticResource GhostButtonStyle}"
+                            FontSize="11"
+                            Padding="8,3"
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- INPUT -->
+            <Border Grid.Row="5"
+                    Padding="12,10,12,14"
+                    BorderBrush="{DynamicResource BorderSubtleBrush}"
+                    BorderThickness="0,1,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0"
+                             x:Name="InputBox"
+                             Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             MinHeight="44"
+                             MaxHeight="120"
+                             VerticalScrollBarVisibility="Auto"
+                             Padding="10,8"
+                             KeyDown="InputBox_KeyDown"/>
+
+                    <Button Grid.Column="1"
+                            Command="{Binding SendCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Margin="8,0,0,0"
+                            Padding="12,0"
+                            VerticalAlignment="Stretch"
+                            ToolTip="Gönder (Ctrl+Enter)">
+                        <mi:MaterialIcon Kind="Send" Width="16" Height="16"/>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

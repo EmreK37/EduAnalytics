@@ -1,0 +1,29 @@
+<Window x:Class="EduAnalytics.UI.Views.KeyboardShortcutsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Klavye Kısayolları"
+        Width="460"
+        Height="420"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource PageBgBrush}">
+    <Border Style="{StaticResource DialogShellStyle}" Margin="22">
+        <StackPanel>
+            <TextBlock Text="Klavye Kısayolları" Style="{StaticResource HeadingStyle}"/>
+            <Border Style="{StaticResource CardSubtleStyle}" Margin="0,12,0,0">
+                <StackPanel>
+                    <TextBlock Text="Ctrl+1 Dashboard" Style="{StaticResource CaptionStyle}"/>
+                    <TextBlock Text="Ctrl+2 Sınav Yönetimi" Style="{StaticResource CaptionStyle}" Margin="0,8,0,0"/>
+                    <TextBlock Text="Ctrl+3 Soru Bankası" Style="{StaticResource CaptionStyle}" Margin="0,8,0,0"/>
+                    <TextBlock Text="Ctrl+4 Öğrenciler" Style="{StaticResource CaptionStyle}" Margin="0,8,0,0"/>
+                    <TextBlock Text="Ctrl+I AI paneli" Style="{StaticResource CaptionStyle}" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+            <Button Content="Kapat"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    HorizontalAlignment="Right"
+                    Margin="0,24,0,0"
+                    Click="Close_Click"/>
+        </StackPanel>
+    </Border>
+</Window>

@@ -1,0 +1,167 @@
+﻿<Window x:Class="EduAnalytics.UI.Views.QuestionEditDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:EduAnalytics.UI.ViewModels"
+        xmlns:enums="clr-namespace:EduAnalytics.Core.Enums;assembly=EduAnalytics.Core"
+        d:DataContext="{d:DesignInstance Type=vm:QuestionEditDialogViewModel}"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="Soruyu Düzenle"
+        Height="680" Width="640"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource PageBgBrush}"
+        ResizeMode="CanResize">
+
+    <Window.Resources>
+        <Style x:Key="OptionLabelStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Style="{StaticResource PageRootGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Style="{StaticResource PageScrollViewerStyle}" Grid.Row="0" VerticalScrollBarVisibility="Auto" Padding="22,20,22,8">
+            <StackPanel>
+                <TextBlock Text="Soruyu Düzenle"
+                           Style="{StaticResource HeadingStyle}"/>
+
+                <Border Style="{StaticResource BentoCardStyle}">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Tür" Style="{StaticResource LabelStyle}"/>
+                            <ComboBox Grid.Row="1" Grid.Column="0" SelectedItem="{Binding Type}">
+                                <ComboBox.Items>
+                                    <x:Static Member="enums:QuestionType.MultipleChoice"/>
+                                    <x:Static Member="enums:QuestionType.OpenEnded"/>
+                                </ComboBox.Items>
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Puan" Style="{StaticResource LabelStyle}"/>
+                            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding MaxPoints, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+
+                        <TextBlock Text="Soru Metni" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Text="{Binding QuestionText, UpdateSourceTrigger=PropertyChanged}"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 MinHeight="80"
+                                 VerticalContentAlignment="Top"
+                                 VerticalScrollBarVisibility="Auto"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Çoktan seçmeli -->
+                <Border Style="{StaticResource BentoCardStyle}"
+                        Visibility="{Binding IsMultipleChoice, Converter={StaticResource BoolToVisibility}}">
+                    <StackPanel>
+                        <TextBlock Text="Şıklar" Style="{StaticResource SubheadingStyle}"/>
+
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="A" Style="{StaticResource OptionLabelStyle}"/>
+                            <TextBox Grid.Column="1" Text="{Binding OptionA, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="B" Style="{StaticResource OptionLabelStyle}"/>
+                            <TextBox Grid.Column="1" Text="{Binding OptionB, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="C" Style="{StaticResource OptionLabelStyle}"/>
+                            <TextBox Grid.Column="1" Text="{Binding OptionC, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="D" Style="{StaticResource OptionLabelStyle}"/>
+                            <TextBox Grid.Column="1" Text="{Binding OptionD, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="E" Style="{StaticResource OptionLabelStyle}"/>
+                            <TextBox Grid.Column="1" Text="{Binding OptionE, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+
+                        <TextBlock Text="Doğru Şık" Style="{StaticResource LabelStyle}"/>
+                        <ComboBox ItemsSource="{Binding AvailableOptions}"
+                                  SelectedItem="{Binding CorrectOption}"
+                                  Width="100"
+                                  HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Klasik -->
+                <Border Style="{StaticResource BentoCardStyle}"
+                        Visibility="{Binding IsOpenEnded, Converter={StaticResource BoolToVisibility}}">
+                    <StackPanel>
+                        <TextBlock Text="Cevap Anahtarı / Notlandırma Rehberi" Style="{StaticResource SubheadingStyle}"/>
+                        <TextBox Text="{Binding AnswerKey, UpdateSourceTrigger=PropertyChanged}"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 MinHeight="80"
+                                 VerticalContentAlignment="Top"
+                                 VerticalScrollBarVisibility="Auto"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardSubtleStyle}" Margin="0,0,0,8">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox Content="Aktif" IsChecked="{Binding IsActive}" Margin="0,0,24,0"/>
+                        <CheckBox Content="Favori" IsChecked="{Binding IsFavorite}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource AlertErrorStyle}"
+                        Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVisibility}}">
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="{DynamicResource DangerEmphasisBrush}" TextWrapping="Wrap"/>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="1"
+                Style="{StaticResource DialogFooterStyle}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="İptal"
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Margin="0,0,8,0"/>
+                <Button Content="Kaydet"
+                        Command="{Binding SaveCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

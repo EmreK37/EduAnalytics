@@ -1,0 +1,176 @@
+<Window x:Class="EduAnalytics.UI.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mi="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
+        Title="EduAnalytics Giriş"
+        Icon="../Assets/AppIcon.ico"
+        Width="800"
+        Height="500"
+        MinWidth="800"
+        MinHeight="500"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        Background="Transparent"
+        KeyDown="OnKeyDown">
+
+    <Window.Resources>
+        <Style x:Key="LoginWindowControlButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource LoginMutedBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="{DynamicResource RadiusMd}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="{DynamicResource SubtleHoverBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Root" Property="Opacity" Value="0.75"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="LoginCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource LoginWindowControlButtonStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#D92D20"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="{DynamicResource LoginWindowBrush}"
+            BorderBrush="{DynamicResource LoginBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="{DynamicResource Radius2Xl}"
+            Effect="{DynamicResource ShadowXl}"
+            MouseLeftButtonDown="WindowSurface_MouseLeftButtonDown">
+        <Grid Style="{StaticResource PageRootGridStyle}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="320"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.ColumnSpan="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,14,14,0"
+                        Panel.ZIndex="10">
+                <Button Style="{StaticResource LoginWindowControlButtonStyle}"
+                        Click="Minimize_Click"
+                        ToolTip="Küçült">
+                    <TextBlock Text="-"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               LineHeight="18"
+                               Margin="0,-4,0,0"/>
+                </Button>
+                <Button Style="{StaticResource LoginCloseButtonStyle}"
+                        Click="Close_Click"
+                        ToolTip="Kapat"
+                        Margin="4,0,0,0">
+                    <mi:MaterialIcon Kind="Close" Width="15" Height="15"/>
+                </Button>
+            </StackPanel>
+
+            <Border Background="{DynamicResource LoginSidebarBrush}"
+                    BorderBrush="{DynamicResource LoginBorderBrush}"
+                    BorderThickness="0,0,1,0"
+                    Padding="24">
+                <StackPanel VerticalAlignment="Center">
+                    <mi:MaterialIcon Kind="SchoolOutline"
+                                     Width="42"
+                                     Height="42"
+                                     Foreground="{DynamicResource LoginAccentBrush}"/>
+                    <TextBlock Text="EduAnalytics"
+                               Margin="0,18,0,6"
+                               Foreground="{DynamicResource LoginTextBrush}"
+                               FontSize="25"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="Ölçme değerlendirme panelinize güvenli giriş yapın."
+                               Foreground="{DynamicResource LoginMutedBrush}"
+                               FontSize="13"
+                               LineHeight="20"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Column="1"
+                        Width="330"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <TextBlock x:Name="TitleText"
+                           Text="Hesabınıza giriş yapın"
+                           Foreground="{DynamicResource LoginTextBrush}"
+                           FontSize="22"
+                           FontWeight="SemiBold"
+                           TextAlignment="Center"/>
+                <TextBlock x:Name="SubtitleText"
+                           Text="Devam etmek için kullanıcı adı ve şifrenizi girin."
+                           Foreground="{DynamicResource LoginMutedBrush}"
+                           FontSize="13"
+                           TextAlignment="Center"
+                           Margin="0,8,0,26"/>
+
+                <Border Width="74"
+                        Height="74"
+                        CornerRadius="{DynamicResource Radius2Xl}"
+                        Background="{DynamicResource LoginSecurityBrush}"
+                        BorderBrush="{DynamicResource LoginBorderBrush}"
+                        BorderThickness="1"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,24">
+                    <mi:MaterialIcon Kind="AccountOutline"
+                                     Width="32"
+                                     Height="32"
+                                     Foreground="{DynamicResource LoginAccentBrush}"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"/>
+                </Border>
+
+                <TextBlock Text="Kullanıcı Adı" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="UsernameBox" Margin="0,6,0,14"/>
+
+                <TextBlock Text="Şifre" Style="{StaticResource LabelStyle}"/>
+                <PasswordBox x:Name="PasswordBox" Margin="0,6,0,14"/>
+
+                <StackPanel x:Name="ConfirmPasswordPanel" Visibility="Collapsed">
+                    <TextBlock Text="Şifre Tekrar" Style="{StaticResource LabelStyle}"/>
+                    <PasswordBox x:Name="ConfirmPasswordBox" Margin="0,6,0,14"/>
+                </StackPanel>
+
+                <Border x:Name="StatusBorder"
+                        Style="{StaticResource AlertErrorStyle}"
+                        Visibility="Collapsed"
+                        Margin="0,0,0,12">
+                    <TextBlock x:Name="StatusText" Style="{StaticResource AlertErrorTextStyle}" TextWrapping="Wrap"/>
+                </Border>
+
+                <Button x:Name="SubmitButton"
+                        Content="Giriş Yap"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        MinHeight="40"
+                        Click="Submit_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
