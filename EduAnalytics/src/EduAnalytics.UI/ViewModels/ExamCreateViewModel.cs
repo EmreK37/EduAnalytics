@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduAnalytics.Business.Dtos;
@@ -386,7 +386,7 @@ public partial class ExamCreateViewModel : ObservableObject
             var userId = await _service.GetDefaultUserIdAsync();
             var model = new ExamCreateModel
             {
-                CourseId = SelectedCourse.Id,
+                CourseId = SelectedCourse!.Id,
                 Title = Title,
                 ExamDate = ExamDate,
                 DurationMinutes = DurationMinutes,

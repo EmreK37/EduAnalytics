@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EduAnalytics.Business.Dtos;
@@ -192,7 +192,7 @@ public partial class QuestionGroupEditorViewModel : ObservableObject
             // 1) Grubu oluştur
             var groupId = await _bankService.CreateGroupAsync(new QuestionGroupCreateModel
             {
-                CourseId = SelectedCourse.Id,
+                CourseId = SelectedCourse!.Id,
                 StemText = StemText,
                 MediaPath = MediaPath,
                 CreatedByUserId = userId

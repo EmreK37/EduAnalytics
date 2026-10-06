@@ -1,6 +1,7 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Threading;
 using System.Net.Http;
+using System.IO;
 using EduAnalytics.Business.Services.Implementations;
 using EduAnalytics.Business.Services.Interfaces;
 using EduAnalytics.DataAccess.Context;
@@ -11,18 +12,53 @@ using EduAnalytics.UI.Services.AIAssistant;
 using EduAnalytics.UI.ViewModels;
 using EduAnalytics.UI.Views;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace EduAnalytics.UI;
 
 public partial class App : Application
 {
     public static IServiceProvider Services { get; private set; } = null!;
+    public static IConfiguration Configuration { get; private set; } = null!;
 
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+        // 1. Configuration Setup
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        Configuration = builder.Build();
+
+        // 2. Serilog Setup
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(Configuration)
+            .CreateLogger();
+
+        Log.Information("EduAnalytics Application starting up...");
+
+        // 3. Global Exception Handling
+        DispatcherUnhandledException += (s, args) =>
+        {
+            Log.Fatal(args.Exception, "A fatal WPF UI exception occurred.");
+            AppMessageBox.Show($"Beklenmedik bir hata oluştu:\n\n{args.Exception.Message}\n\nDetaylar log dosyasına kaydedildi.", "Sistem Hatası", MessageBoxButton.OK, MessageBoxImage.Error);
+            args.Handled = true; // Prevent application crash if possible
+        };
+
+        AppDomain.CurrentDomain.UnhandledException += (s, args) =>
+        {
+            Log.Fatal(args.ExceptionObject as Exception, "An unhandled AppDomain exception occurred.");
+        };
+
+        TaskScheduler.UnobservedTaskException += (s, args) =>
+        {
+            Log.Fatal(args.Exception, "An unobserved task exception occurred.");
+            args.SetObserved();
+        };
 
         try
         {
@@ -59,6 +95,7 @@ public partial class App : Application
             if (startupError != null)
             {
                 splash.Close();
+                Log.Fatal(startupError, "Veritabanı başlatılamadı.");
                 AppMessageBox.Show(
                     $"Veritabanı başlatılamadı:\n\n{startupError.GetType().Name}: {startupError.Message}\n\n{startupError.InnerException?.Message}\n\nLocalDB hala açılmıyorsa SQL Server LocalDB instance'ını yeniden başlatmayı deneyin.",
                     "Başlangıç Hatası",
@@ -86,12 +123,20 @@ public partial class App : Application
         }
         catch (Exception ex)
         {
+            Log.Fatal(ex, "Uygulama başlatılırken beklenmeyen bir hata oluştu.");
             AppMessageBox.Show(
                 $"Uygulama başlatılırken beklenmeyen bir hata oluştu:\n\n{ex.GetType().Name}: {ex.Message}\n\n{ex.InnerException?.Message}",
                 "Başlangıç Hatası",
                 MessageBoxButton.OK, MessageBoxImage.Error);
             Application.Current.Shutdown();
         }
+    }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
+        Log.Information("EduAnalytics Application shutting down...");
+        Log.CloseAndFlush();
+        base.OnExit(e);
     }
 
     private static void SeedDatabaseWithRetry()
@@ -110,6 +155,7 @@ public partial class App : Application
             catch (Exception ex) when (attempt < maxAttempts && IsTransientLocalDbStartupError(ex))
             {
                 lastError = ex;
+                Log.Warning(ex, "Veritabanı başlatılamadı, tekrar deneniyor ({Attempt}/{MaxAttempts})", attempt, maxAttempts);
                 Thread.Sleep(TimeSpan.FromMilliseconds(650 * attempt));
             }
         }
@@ -138,14 +184,12 @@ public partial class App : Application
 
     private static void ConfigureServices(ServiceCollection services)
     {
+        // Serilog DI
+        services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+
         // DbContext - Transient: Her servis çağrısı kendi context'ini alır.
-        // WPF masaüstü uygulamasında "Scope" kavramı yoktur, Transient en güvenli.
         services.AddDbContext<EduAnalyticsDbContext>(options =>
-            options.UseSqlServer(
-                "Server=(localdb)\\MSSQLLocalDB;" +
-                "Database=EduAnalyticsDb;" +
-                "Trusted_Connection=true;" +
-                "TrustServerCertificate=true;"),
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
             ServiceLifetime.Transient);
 
         // Business Services - Transient
@@ -199,7 +243,6 @@ public partial class App : Application
         services.AddTransient<RubricGradeDialogViewModel>();
 
         // FAZ 6 — Optik okuma (PaddleOCR + OMR)
-        // Singleton: PaddleOCR modelleri ilk kullanımda yüklenir ve süreç boyunca bellekte kalır.
         services.AddSingleton<IOpticalFormReader, OpticalFormReader>();
         services.AddTransient<OpticalReadingViewModel>();
 
